@@ -1,0 +1,8 @@
+.vs/
+packages/
+bin/
+obj/
+App_Data/
+DAL/packages/
+BLL/packages/
+Client/packages/

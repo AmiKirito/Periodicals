@@ -8,27 +8,39 @@
         public override void Up()
         {
             CreateTable(
-                "dbo.AspNetRoles",
+                "dbo.Authors",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
-                        Name = c.String(nullable: false, maxLength: 256),
+                        Name = c.String(),
                     })
-                .PrimaryKey(t => t.Id)
-                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.AspNetUserRoles",
+                "dbo.Publishers",
                 c => new
                     {
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        RoleId = c.String(nullable: false, maxLength: 128),
+                        Id = c.String(nullable: false, maxLength: 128),
+                        Title = c.String(),
                     })
-                .PrimaryKey(t => new { t.UserId, t.RoleId })
-                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Subscriptions",
+                c => new
+                    {
+                        Id = c.String(nullable: false, maxLength: 128),
+                        Price = c.Int(nullable: false),
+                        ExpirationDate = c.DateTime(nullable: false),
+                        PublisherId = c.String(nullable: false, maxLength: 128),
+                        SubscriptionPeriod = c.String(),
+                        UserId = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId)
-                .Index(t => t.RoleId);
+                .ForeignKey("dbo.Publishers", t => t.PublisherId, cascadeDelete: true)
+                .Index(t => t.PublisherId)
+                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -78,39 +90,17 @@
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.Subscriptions",
+                "dbo.AspNetUserRoles",
                 c => new
                     {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        Price = c.Int(nullable: false),
-                        ExpirationDate = c.DateTime(nullable: false),
-                        PublisherId = c.String(nullable: false, maxLength: 128),
-                        SubscriptionPeriod = c.Int(nullable: false),
                         UserId = c.String(nullable: false, maxLength: 128),
+                        RoleId = c.String(nullable: false, maxLength: 128),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Publishers", t => t.PublisherId, cascadeDelete: true)
+                .PrimaryKey(t => new { t.UserId, t.RoleId })
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.PublisherId)
-                .Index(t => t.UserId);
-            
-            CreateTable(
-                "dbo.Publishers",
-                c => new
-                    {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        Title = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Authors",
-                c => new
-                    {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        Name = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
+                .Index(t => t.UserId)
+                .Index(t => t.RoleId);
             
             CreateTable(
                 "dbo.Topics",
@@ -120,6 +110,16 @@
                         Title = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.AspNetRoles",
+                c => new
+                    {
+                        Id = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(nullable: false, maxLength: 256),
+                    })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
             CreateTable(
                 "dbo.PublisherAuthors",
@@ -151,39 +151,39 @@
         
         public override void Down()
         {
-            DropForeignKey("dbo.Subscriptions", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.PublisherTopics", "TopicId", "dbo.Topics");
-            DropForeignKey("dbo.PublisherTopics", "PublisherId", "dbo.Publishers");
-            DropForeignKey("dbo.Subscriptions", "PublisherId", "dbo.Publishers");
-            DropForeignKey("dbo.PublisherAuthors", "AuthorId", "dbo.Authors");
-            DropForeignKey("dbo.PublisherAuthors", "PublisherId", "dbo.Publishers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.PublisherTopics", "TopicId", "dbo.Topics");
+            DropForeignKey("dbo.PublisherTopics", "PublisherId", "dbo.Publishers");
+            DropForeignKey("dbo.Subscriptions", "PublisherId", "dbo.Publishers");
+            DropForeignKey("dbo.Subscriptions", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.PublisherAuthors", "AuthorId", "dbo.Authors");
+            DropForeignKey("dbo.PublisherAuthors", "PublisherId", "dbo.Publishers");
             DropIndex("dbo.PublisherTopics", new[] { "TopicId" });
             DropIndex("dbo.PublisherTopics", new[] { "PublisherId" });
             DropIndex("dbo.PublisherAuthors", new[] { "AuthorId" });
             DropIndex("dbo.PublisherAuthors", new[] { "PublisherId" });
-            DropIndex("dbo.Subscriptions", new[] { "UserId" });
-            DropIndex("dbo.Subscriptions", new[] { "PublisherId" });
+            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
-            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
-            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Subscriptions", new[] { "UserId" });
+            DropIndex("dbo.Subscriptions", new[] { "PublisherId" });
             DropTable("dbo.PublisherTopics");
             DropTable("dbo.PublisherAuthors");
+            DropTable("dbo.AspNetRoles");
             DropTable("dbo.Topics");
-            DropTable("dbo.Authors");
-            DropTable("dbo.Publishers");
-            DropTable("dbo.Subscriptions");
+            DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.AspNetUserRoles");
-            DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Subscriptions");
+            DropTable("dbo.Publishers");
+            DropTable("dbo.Authors");
         }
     }
 }

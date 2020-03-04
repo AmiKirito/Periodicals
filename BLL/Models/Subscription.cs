@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DAL.Models
+namespace BLL.Models
 {
     public class Subscription
     {
@@ -13,7 +9,11 @@ namespace DAL.Models
         public DateTime ExpirationDate { get; set; }
         public string PublisherId { get; set; }
         public Publisher Publisher { get; set; }
-        public Period SubscriptionPeriod{ get; set; }
+        public string SubscriptionPeriod
+        {
+            get { return SubscriptionPeriod; }
+            private set { SubscriptionPeriod = EnumExtensions.EnumExtensions.ParseEnumValue<Period>(value).ToString(); }
+        }
         public string UserId { get; set; }
         public User User { get; set; }
 
@@ -24,5 +24,6 @@ namespace DAL.Models
             half = 6,
             year = 12
         }
+        
     }
 }

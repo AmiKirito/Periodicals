@@ -1,10 +1,5 @@
-﻿using DAL.Models;
-using System;
-using System.Collections.Generic;
+﻿using DAL.ModelsEntities;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.DbExtensionMethods
 {
@@ -12,7 +7,7 @@ namespace DAL.DbExtensionMethods
     {
         public static void Seed(this DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Publisher>()
+            modelBuilder.Entity<PublisherEntity>()
                 .HasMany(p => p.Authors)
                 .WithMany(a => a.Publishers)
                 .Map(m =>
@@ -21,7 +16,7 @@ namespace DAL.DbExtensionMethods
                     m.MapRightKey("AuthorId");
                     m.ToTable("PublisherAuthors");
                 });
-            modelBuilder.Entity<Publisher>()
+            modelBuilder.Entity<PublisherEntity>()
                 .HasMany(p => p.Topics)
                 .WithMany(t => t.Publishers)
                 .Map(m =>
@@ -30,13 +25,13 @@ namespace DAL.DbExtensionMethods
                     m.MapRightKey("TopicId");
                     m.ToTable("PublisherTopics");
                 });
-            modelBuilder.Entity<Publisher>()
+            modelBuilder.Entity<PublisherEntity>()
                 .HasMany(p => p.Subscriptions)
                 .WithRequired(s => s.Publisher)
                 .HasForeignKey(s => s.PublisherId);
 
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserEntity>()
                 .HasMany(u => u.Subscriptions)
                 .WithRequired(s => s.User)
                 .HasForeignKey(s => s.UserId);

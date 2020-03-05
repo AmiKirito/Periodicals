@@ -2,9 +2,9 @@
 
 namespace Periodicals.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();

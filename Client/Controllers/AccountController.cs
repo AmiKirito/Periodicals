@@ -1,5 +1,6 @@
 ﻿using Client.ViewModels;
 using DAL.ModelsEntities;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Periodicals.App_Start;
@@ -74,6 +75,46 @@ namespace Periodicals.Controllers
             AuthenticationManager.SignOut();
 
             return RedirectToAction("Login", "Account");
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult Register(RegisterViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = new UserEntity()
+            {
+                UserName = model.Username,
+                Email = model.Email
+            };
+            var result = UserManager.Create(user, model.Password);
+            
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError("errorAttempt", "Invalid registration attempt");
+                return View(model);
+            }
+
+            var signIn = SignInManager.PasswordSignIn(user.UserName, model.Password, false, true);
+            switch (signIn)
+            {
+                case SignInStatus.Success:
+                    return RedirectToAction("Index", "Home");
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+            }
         }
     }
 }

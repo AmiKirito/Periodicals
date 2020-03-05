@@ -1,4 +1,4 @@
-﻿namespace Periodicals.ViewModels
+﻿namespace Client.ViewModels
 {
     public class PublisherViewModel
     {

@@ -1,0 +1,13 @@
+﻿.login-wrap {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 70vh;
+}
+.editor {
+    padding: 10px;
+}
+.login-title{
+    font-size:35px;
+}

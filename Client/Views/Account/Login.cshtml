@@ -1,0 +1,38 @@
+﻿@using Client.ViewModels
+@model LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    <div class="login-wrap">
+        <div>
+            @Html.ValidationSummary(true)
+            <div>
+                <span class="login-title">Login</span>
+            </div>
+            <div class="form-group">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { placeholder = "Username", @class = "editor" } })
+                @Html.ValidationMessageFor(model => model.Username)
+            </div>
+            <div class="form-group">
+                @Html.PasswordFor(model => model.Password, new { placeholder = "Password", @class = "editor" })
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+            <div class="form-group">
+                @Html.PasswordFor(model => model.ConfirmPassword, new { placeholder = "Password confirmation", @class = "editor" })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword)
+            </div>
+            <div class="form-group">
+                @Html.EditorFor(model => model.RememberMe)
+                @Html.LabelFor(model => model.RememberMe)
+            </div>
+        </div>
+        <div>
+            <input type="submit" class="btn btn-dark" value="Login" />
+        </div>
+    </div>
+}
+

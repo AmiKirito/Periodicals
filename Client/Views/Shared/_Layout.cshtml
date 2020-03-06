@@ -26,7 +26,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Hello - @User.Identity.Name</a>
+                                <a class="nav-link" href="@Url.Action("Cabinet", "Account")">Hello - @User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="@Url.Action("Logout", "Account")">Logout</a>
@@ -63,9 +63,11 @@
         </div>
     </footer>
     <script src="~/Scripts/jquery-3.3.1.slim.min.js"></script>
-    
+
     <script src="~/Content/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/Content/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/jquery") 
+    @Scripts.Render("~/bundles/jqueryval")
 </body>
 </html>

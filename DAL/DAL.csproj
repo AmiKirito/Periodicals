@@ -95,14 +95,13 @@
     <Compile Include="ModelsEntities\TopicEntity.cs" />
     <Compile Include="ModelsEntities\UserEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\PublisherRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj">
       <Project>{8a031295-d8f6-4a36-a32c-34a0765df1c1}</Project>

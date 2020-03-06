@@ -3,7 +3,7 @@ using DAL.ModelsEntities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Periodicals.App_Start;
+using Client.App_Start;
 using System.Web;
 using System.Web.Mvc;
 
@@ -115,6 +115,10 @@ namespace Periodicals.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+        }
+        public ActionResult Cabinet()
+        {
+            return View();
         }
     }
 }

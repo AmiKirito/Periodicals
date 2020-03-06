@@ -9,5 +9,10 @@ namespace BLL.Models
         public List<Author> Authors { get; set; }
         public List<Topic> Topics { get; set; }
         public List<Subscription> Subscriptions { get; set; }
+        public Publisher(string id, string title)
+        {
+            Id = id;
+            Title = title;
+        }
     }
 }

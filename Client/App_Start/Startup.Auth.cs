@@ -5,10 +5,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
-using Periodicals.App_Start;
+using Client.App_Start;
 using System;
 
-namespace Periodicals
+namespace Client
 {
     public partial class Startup
     {

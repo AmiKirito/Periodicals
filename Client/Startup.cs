@@ -1,9 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(Periodicals.Startup))]
+[assembly: OwinStartup(typeof(Client.Startup))]
 
-namespace Periodicals
+namespace Client
 {
     public partial class Startup
     {

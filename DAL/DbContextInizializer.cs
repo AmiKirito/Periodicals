@@ -18,6 +18,7 @@ namespace DAL
             context.Publishers.Add(pub1);
             context.SaveChanges();
 
+
             CreateDefaultRoles(context);
         }
 

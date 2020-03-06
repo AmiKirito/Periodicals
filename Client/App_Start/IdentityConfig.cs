@@ -7,7 +7,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using System;
 
-namespace Periodicals.App_Start
+namespace Client.App_Start
 {
     public class ApplicationUserManager : UserManager<UserEntity>
     {

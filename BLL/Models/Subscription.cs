@@ -17,6 +17,16 @@ namespace BLL.Models
         public string UserId { get; set; }
         public User User { get; set; }
 
+        public Subscription(string id, int price, DateTime expirationDate, string publisherId, string subscriptionPeriod, string userId)
+        {
+            Id = id;
+            Price = price;
+            ExpirationDate = expirationDate;
+            PublisherId = publisherId;
+            SubscriptionPeriod = subscriptionPeriod;
+            UserId = userId;
+        }
+
         public enum Period
         {
             month = 1,

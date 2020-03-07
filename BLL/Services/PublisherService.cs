@@ -13,14 +13,14 @@ namespace BLL.Services
             _publisherRepository = publisherRepository;
         }
 
-        public int CountAll()
+        public int CountPublishers()
         {
-            return _publisherRepository.CountAllPublishers();
+            return _publisherRepository.CountAll();
         }
 
-        public List<Publisher> GetAll()
+        public List<Publisher> GetPublishers()
         {
-            return _publisherRepository.GetAllPublishers();
+            return _publisherRepository.GetAll();
         }
     }
 }

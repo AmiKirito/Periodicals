@@ -6,12 +6,19 @@ using Microsoft.Owin.Security;
 using Client.App_Start;
 using System.Web;
 using System.Web.Mvc;
+using BLL.IServices;
 
 namespace Periodicals.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly IAccountService _accountService;
+
+        public AccountController(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
         public ApplicationUserManager UserManager 
         {
             get
@@ -49,17 +56,22 @@ namespace Periodicals.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult Login(LoginViewModel model)
+        public ActionResult Login(LoginViewModel model, string ReturnUrl)
         {
             if(!ModelState.IsValid)
             {
                 return View(model);
             }
+
             var result = SignInManager.PasswordSignIn(model.Username, model.Password, model.RememberMe, shouldLockout: true);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index", "Home");
+                    if(string.IsNullOrWhiteSpace(ReturnUrl))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    return Redirect(ReturnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.Failure:
@@ -107,16 +119,65 @@ namespace Periodicals.Controllers
             switch (signIn)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");    
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("loginError", "Invalid login attempt.");
                     return View(model);
             }
         }
         public ActionResult Cabinet()
+        {
+            return View();
+        }
+        public ActionResult Balance()
+        {
+            BalanceViewModel model = new BalanceViewModel();
+            model.Balance = UserManager.FindById(User.Identity.GetUserId()).AccountSum;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult AddBalance(BalanceViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            _accountService.AddSumToBalance(model.AddSum, User.Identity.Name);
+
+            return View("Cabinet");
+        }
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            ChangePasswordViewModel model = new ChangePasswordViewModel();
+            model.UserId = User.Identity.GetUserId();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                ModelState.AddModelError("changeError", "Invalid data entered.");
+                return View(model);
+            }
+
+            var result = UserManager.ChangePassword(model.UserId, model.OldPassword, model.NewPassword);
+            switch (result.Succeeded)
+            {
+                case true:
+                    return View("Cabinet");
+                default:
+                    ModelState.AddModelError("", "Invalid change password attempt.");
+                    return View(model);
+            }
+        }
+        [Authorize(Roles = "Moderator,Admin,SuperAdmin")]
+        public ActionResult Users()
         {
             return View();
         }

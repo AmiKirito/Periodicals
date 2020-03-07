@@ -17,8 +17,15 @@ namespace Client.Utils
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterType<AppDbContext>().AsSelf();
-            builder.RegisterType<PublisherRepository>().As<IPublisherRepository>();
+
             builder.RegisterType<PublisherService>().As<IPublisherService>();
+            builder.RegisterType<PublisherRepository>().As<IPublisherRepository>();
+
+            builder.RegisterType<SubscriptionService>().As<ISubscriptionService>();
+            builder.RegisterType<SubscriptionRepository>().As<ISubscriptionRepository>();
+
+            builder.RegisterType<AccountService>().As<IAccountService>();
+            builder.RegisterType<AccountRepository>().As<IAccountRepository>();
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

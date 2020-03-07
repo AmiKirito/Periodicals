@@ -1,0 +1,31 @@
+﻿@using Client.ViewModels
+@model BalanceViewModel
+
+@{
+    ViewBag.Title = "Balance";
+}
+
+<h2>Balance</h2>
+
+<h3>Your balance: $@Model.Balance</h3>
+
+@using (Html.BeginForm("AddBalance", "Account", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    <div class="container">
+        <div class="row">
+            <div class="flex-column">
+                <div>
+                    @Html.LabelFor(model => model.AddSum)
+                    @Html.EditorFor(model => model.AddSum, new { htmlAttributes = new { placeholder = "Enter the sum", @class = "editor" } })
+                </div>
+                <div class="text-danger">
+                    @Html.ValidationMessageFor(model => model.AddSum)
+                </div>
+            </div>
+            <div class="p-1">
+                <input type="submit" value="Add Money" class="btn btn-dark editor"/>
+            </div>
+        </div>
+    </div>
+}

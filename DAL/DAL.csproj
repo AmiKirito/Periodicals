@@ -88,6 +88,14 @@
     <Compile Include="Migrations\202003041329505_Initial.designer.cs">
       <DependentUpon>202003041329505_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003071114138_Initial1.cs" />
+    <Compile Include="Migrations\202003071114138_Initial1.designer.cs">
+      <DependentUpon>202003071114138_Initial1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003071359582_ModelChange_1.cs" />
+    <Compile Include="Migrations\202003071359582_ModelChange_1.designer.cs">
+      <DependentUpon>202003071359582_ModelChange_1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsEntities\AuthorEntity.cs" />
     <Compile Include="ModelsEntities\PublisherEntity.cs" />
@@ -95,7 +103,9 @@
     <Compile Include="ModelsEntities\TopicEntity.cs" />
     <Compile Include="ModelsEntities\UserEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\PublisherRepository.cs" />
+    <Compile Include="Repositories\SubscriptionRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -111,6 +121,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202003041329505_Initial.resx">
       <DependentUpon>202003041329505_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003071114138_Initial1.resx">
+      <DependentUpon>202003071114138_Initial1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003071359582_ModelChange_1.resx">
+      <DependentUpon>202003071359582_ModelChange_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

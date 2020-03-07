@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace BLL.IRepositories
 {
-    public interface IPublisherRepository
+    public interface ISubscriptionRepository
     {
-        List<Publisher> GetAll();
-        int CountAll();
+        List<Subscription> GetAll();
     }
 }

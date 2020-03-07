@@ -10,7 +10,7 @@ namespace Client.ViewModels
         public string Username { get; set; }
         [Required(ErrorMessage = "Email is required")]
         [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$",
-                            ErrorMessage = "Please enter a valid e-mail adress")]
+                            ErrorMessage = "Please enter a valid email address")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         [Required(ErrorMessage = "Password is required")]

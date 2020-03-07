@@ -1,6 +1,28 @@
-﻿@{
+﻿@using Client.ViewModels
+@model CabinetViewModel
+
+@{
     ViewBag.Title = "Cabinet";
 }
 
 <h2>Cabinet</h2>
 
+<div class="container">
+    <div class="row">
+        <a href="#" class="col">
+            <div>
+                My Subscriptions
+            </div>
+        </a>
+        <a href="@Url.Action("Balance", "Account")" class="col">
+            <div>
+                Balance
+            </div>
+        </a>
+        <a href="@Url.Action("ChangePassword", "Account")" class="col">
+            <div>
+                Change Password
+            </div>
+        </a>
+    </div>
+</div>

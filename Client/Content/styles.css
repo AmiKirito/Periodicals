@@ -8,6 +8,12 @@
 .editor {
     padding: 10px;
 }
-.login-title{
-    font-size:35px;
+.login-title {
+    font-size: 35px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

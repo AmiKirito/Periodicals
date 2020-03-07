@@ -13,13 +13,13 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public int CountAllPublishers()
+        public int CountAll()
         {
             var publishersCount = _context.Publishers.Count();
             return publishersCount;
         }
 
-        public List<Publisher> GetAllPublishers()
+        public List<Publisher> GetAll()
         {
             var publishersQuerry = _context.Publishers.Include("Authors").Include("Topics").Include("Subscriptions").ToList();
             var publishers = new List<Publisher>();
@@ -54,7 +54,7 @@ namespace DAL.Repositories
                     subsriptions.Add(subscription);
                 }
 
-                var publisher = new Publisher(publisherEntity.Id, publisherEntity.Title);
+                var publisher = new Publisher(publisherEntity.Id, publisherEntity.Title, publisherEntity.Description);
 
                 authors.ForEach(author => publisher.Authors.Add(author));
                 topics.ForEach(topic => publisher.Topics.Add(topic));

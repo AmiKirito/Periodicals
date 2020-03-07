@@ -5,7 +5,7 @@ namespace BLL.IServices
 {
     public interface IPublisherService
     {
-        List<Publisher> GetAll();
-        int CountAll();
+        List<Publisher> GetPublishers();
+        int CountPublishers();
     }
 }

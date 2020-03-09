@@ -50,7 +50,6 @@ namespace DAL.Repositories
                     var subscription = new Subscription(subscriptionEntity.Id, subscriptionEntity.Price,
                                                         subscriptionEntity.ExpirationDate.Date, subscriptionEntity.PublisherId,
                                                         subscriptionEntity.SubscriptionPeriod, subscriptionEntity.UserId);
-
                     subsriptions.Add(subscription);
                 }
 

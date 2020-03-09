@@ -12,9 +12,14 @@ namespace BLL.Services
         {
             _subscriptionRepository = subscriptionRepository;
         }
-        public List<Subscription> GetSubscriptions()
+        public int CountSubscriptions()
         {
-            return _subscriptionRepository.GetAll();
+            return _subscriptionRepository.CountAll();
+        }
+
+        public List<Subscription> GetSubscriptions(string userId)
+        {
+            return _subscriptionRepository.GetAll(userId);
         }
     }
 }

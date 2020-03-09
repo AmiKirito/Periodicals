@@ -1,0 +1,38 @@
+﻿@using Client.ViewModels
+@model SubscriptionViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>My Subscriptions</h2>
+
+@foreach (var subscription in Model.Subscriptions)
+{
+    if (subscription.Publisher.IsRemoved == true)
+    {
+        <h4>@subscription.Publisher.Title</h4>
+        <h3>The publisher was removed</h3>
+    }
+    else
+    {
+
+        <h4>Title: @subscription.Publisher.Title</h4>
+        <h4>Expiration date: @subscription.ExpirationDate.ToShortDateString()</h4>
+        <h4>
+            Status: 
+            @if(subscription.IsExpired == false)
+            {
+            <span class="text-success">Active</span>
+            }
+            else
+            {
+            <span class="text-danger">Expired</span>
+            }
+        </h4>
+        <a href="#" class="btn btn-dark">Details</a>
+    }
+    <hr />
+}
+
+

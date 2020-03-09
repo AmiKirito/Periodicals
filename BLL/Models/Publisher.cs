@@ -11,12 +11,16 @@ namespace BLL.Models
         public List<Topic> Topics { get; set; }
         public List<Subscription> Subscriptions { get; set; }
         public bool IsRemoved { get; set; }
+        public Publisher() { }
         public Publisher(string id, string title, string description)
         {
             Id = id;
             Title = title;
             Desription = description;
             IsRemoved = false;
+            Authors = new List<Author>();
+            Topics = new List<Topic>();
+            Subscriptions = new List<Subscription>();
         }
     }
 }

@@ -14,5 +14,6 @@ namespace DAL.ModelsEntities
         public string SubscriptionPeriod { get; set; }
         public string UserId { get; set; }
         public UserEntity User { get; set; }
+        public bool IsExpired { get; set; }
     }
 }

@@ -195,6 +195,7 @@
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="ViewModels\PublisherViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\SubscriptionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\logo.png" />
@@ -257,11 +258,11 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Account\Balance.cshtml" />
     <Content Include="Views\Account\Users.cshtml" />
+    <Content Include="Views\Subscription\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Error\" />
-    <Folder Include="Views\Subscription\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

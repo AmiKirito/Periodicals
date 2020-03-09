@@ -5,6 +5,7 @@ namespace BLL.IRepositories
 {
     public interface ISubscriptionRepository
     {
-        List<Subscription> GetAll();
+        List<Subscription> GetAll(string userId);
+        int CountAll();
     }
 }

@@ -5,7 +5,7 @@ namespace BLL.IServices
 {
     public interface ISubscriptionService
     {
-        List<Subscription> GetSubscriptions();
-        
+        List<Subscription> GetSubscriptions(string userId);
+        int CountSubscriptions();
     }
 }

@@ -29,7 +29,7 @@ namespace Periodicals.Controllers
             IEnumerable<Publisher> publishersPerPage = _publisherService.GetPublishers().Skip((page - 1) * pageSize).Take(pageSize);
             PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = totalItems };
 
-            PublisherViewModel model = new PublisherViewModel { PageInfo = pageInfo, Publishers = publishersPerPage };
+            PublisherViewModel model = new PublisherViewModel { Publishers = publishersPerPage, PageInfo = pageInfo };
 
             return View(model);
         }

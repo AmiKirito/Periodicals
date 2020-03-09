@@ -9,14 +9,11 @@ namespace BLL.Models
         public DateTime ExpirationDate { get; set; }
         public string PublisherId { get; set; }
         public Publisher Publisher { get; set; }
-        public string SubscriptionPeriod
-        {
-            get { return SubscriptionPeriod; }
-            private set { SubscriptionPeriod = EnumExtensions.EnumExtensions.ParseEnumValue<Period>(value).ToString(); }
-        }
+        public string SubscriptionPeriod { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }
-
+        public bool IsExpired { get; set; }
+        public Subscription() { }
         public Subscription(string id, int price, DateTime expirationDate, string publisherId, string subscriptionPeriod, string userId)
         {
             Id = id;
@@ -25,15 +22,7 @@ namespace BLL.Models
             PublisherId = publisherId;
             SubscriptionPeriod = subscriptionPeriod;
             UserId = userId;
-        }
-
-        public enum Period
-        {
-            month = 1,
-            quarter = 3,
-            half = 6,
-            year = 12
-        }
-        
+            IsExpired = false;
+        }        
     }
 }

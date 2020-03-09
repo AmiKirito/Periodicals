@@ -195,6 +195,7 @@
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="ViewModels\PublisherViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\SubscriptionCreateViewModel.cs" />
     <Compile Include="ViewModels\SubscriptionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +260,8 @@
     <Content Include="Views\Account\Balance.cshtml" />
     <Content Include="Views\Account\Users.cshtml" />
     <Content Include="Views\Subscription\Index.cshtml" />
+    <Content Include="Views\Subscription\New.cshtml" />
+    <Content Include="Views\Shared\AlreadySubscribed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

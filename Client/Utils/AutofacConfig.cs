@@ -6,6 +6,8 @@ using BLL.IRepositories;
 using DAL;
 using BLL.Services;
 using BLL.IServices;
+using Client.App_Start;
+using Microsoft.Owin.Security;
 
 namespace Client.Utils
 {
@@ -16,6 +18,7 @@ namespace Client.Utils
             var builder = new ContainerBuilder();
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
+
             builder.RegisterType<AppDbContext>().AsSelf();
 
             builder.RegisterType<PublisherService>().As<IPublisherService>();

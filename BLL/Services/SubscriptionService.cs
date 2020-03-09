@@ -1,6 +1,7 @@
 ﻿using BLL.IRepositories;
 using BLL.IServices;
 using BLL.Models;
+using System;
 using System.Collections.Generic;
 
 namespace BLL.Services
@@ -12,14 +13,35 @@ namespace BLL.Services
         {
             _subscriptionRepository = subscriptionRepository;
         }
+
+        public bool CheckIfSubscriptionExists(string userId, string publisherId)
+        {
+            return _subscriptionRepository.CheckForSubscription(userId, publisherId);
+        }
+
         public int CountSubscriptions()
         {
             return _subscriptionRepository.CountAll();
         }
 
+        public Publisher GetSubscriptionPublisher(string publisherId)
+        {
+            return _subscriptionRepository.GetPublisherForSubscription(publisherId);
+        }
+
         public List<Subscription> GetSubscriptions(string userId)
         {
             return _subscriptionRepository.GetAll(userId);
+        }
+
+        public int GetUserBalanceForSubscription(string userId)
+        {
+            return _subscriptionRepository.GetUserBalance(userId);
+        }
+
+        public void RegisterNewSubscription(string userId, string publisherId, string subscriptionPeriod)
+        {
+            _subscriptionRepository.LinkNewSubscription(userId, publisherId, subscriptionPeriod);
         }
     }
 }

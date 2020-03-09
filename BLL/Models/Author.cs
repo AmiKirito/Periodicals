@@ -11,6 +11,7 @@ namespace BLL.Models
         {
             Id = id;
             Name = name;
+            Publishers = new List<Publisher>();
         }
     }
 }

@@ -53,7 +53,8 @@ namespace DAL.Repositories
                     subsriptions.Add(subscription);
                 }
 
-                var publisher = new Publisher(publisherEntity.Id, publisherEntity.Title, publisherEntity.Description);
+                var publisher = new Publisher(publisherEntity.Id, publisherEntity.Title, publisherEntity.Description,
+                                              publisherEntity.MonthlySubscriptionPrice);
 
                 authors.ForEach(author => publisher.Authors.Add(author));
                 topics.ForEach(topic => publisher.Topics.Add(topic));

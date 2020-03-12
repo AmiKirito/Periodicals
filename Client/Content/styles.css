@@ -11,9 +11,18 @@
 .login-title {
     font-size: 35px;
 }
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+textarea{
+    -webkit-box-sizing: border-box;
+}
+.col-3 {
+    padding: 10px;
+}
+.col-3.light:hover {
+    outline: 1px solid grey;
+    transition: .2s;
 }

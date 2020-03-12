@@ -7,5 +7,8 @@ namespace BLL.IServices
     {
         List<Publisher> GetPublishers();
         int CountPublishers();
+        Publisher GetPublisherById(string id);
+        List<Author> GetExistingAuthors();
+        List<Topic> GetExistingTopics();
     }
 }

@@ -1,26 +1,5 @@
-﻿@using Client.HtmlHelpers
-@using Client.ViewModels
-@model PublisherViewModel
-
-@{
+﻿@{
     ViewBag.Title = "Home";
 }
 
-<table class="table">
-    <tr>
-        <td>Title</td>
-        <td>Description</td>
-    </tr>
-    @foreach (var item in Model.Publishers)
-    {
-        <tr>
-            <td>@item.Title</td>
-            <td>@item.Desription</td>
-        </tr>
-    }
-</table>
-<br />
-<div class="btn-group">
-    @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
-</div>
-
+<h1>Hello World!</h1>

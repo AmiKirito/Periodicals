@@ -24,6 +24,9 @@ namespace Client
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/mycss").Include(
+                      "~/Content/bootstrap.css",
+                      "~/Content/styles.css"));
         }
     }
 }

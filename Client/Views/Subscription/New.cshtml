@@ -5,17 +5,17 @@
     ViewBag.Title = "New Subscription";
 }
 
-<h2>Subscribe</h2>
-
-<h3>@Model.Publisher.Title</h3>
-<h3>@Model.Publisher.Desription</h3>
+<h2>Subscribe - "@Model.Publisher.Title" publisher</h2>
 
 @using (Html.BeginForm("New", "Subscription", FormMethod.Post))
 {
     @Html.HiddenFor(model => model.UserId);
+    @Html.HiddenFor(model => model.UserBalance);
     @Html.HiddenFor(model => model.Publisher.Id);
-    @Html.DisplayTextFor(model => model.UserBalance);
+    @Html.HiddenFor(model => model.Publisher.Title);
+    @Html.HiddenFor(model => model.Publisher.MonthlySubscriptionPrice);
 
+    <span>Your balance: @Html.DisplayTextFor(model => model.UserBalance)</span> 
 
     @Html.DropDownListFor(model => model.SubscriptionPeriod, new List<SelectListItem>
     {
@@ -26,8 +26,6 @@
     }, new { @class = "custom-select" });
 
     <input type="submit" class="btn btn-dark editor" value="Subscribe">
-
-
 
     @Html.ValidationSummary(false);
 }

@@ -7,5 +7,8 @@ namespace BLL.IRepositories
     {
         List<Publisher> GetAll();
         int CountAll();
+        Publisher GetById(string id);
+        List<Author> GetAuthors();
+        List<Topic> GetTopics();
     }
 }

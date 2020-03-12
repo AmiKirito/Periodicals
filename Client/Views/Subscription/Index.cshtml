@@ -8,38 +8,45 @@
 
 <h2>My Subscriptions</h2>
 
-@foreach (var subscription in Model.Subscriptions)
+@if (Model.Subscriptions.Count() == 0)
 {
-    if (subscription.Publisher.IsRemoved == true)
-    {
-        <h4>@subscription.Publisher.Title</h4>
-        <h3>The publisher was removed</h3>
-    }
-    else
-    {
-
-        <h4>Title: @subscription.Publisher.Title</h4>
-        <h4>Subscription period: @subscription.SubscriptionPeriod</h4>
-        <h4>Expiration date: @subscription.ExpirationDate.ToShortDateString()</h4>
-        <h4>
-            Status:
-            @if (subscription.IsExpired == false)
-            {
-                <span class="text-success">Active</span>
-            }
-            else
-            {
-                <span class="text-danger">Expired</span>
-            }
-        </h4>
-        <a href="#" class="btn btn-dark">Details</a>
-    }
-    <hr />
+    <span>You don't have any active subscriptions yet</span>
 }
+else
+{
+    foreach (var subscription in Model.Subscriptions)
+    {
+        if (subscription.Publisher.IsRemoved == true)
+        {
+            <h4>@subscription.Publisher.Title</h4>
+            <h3>The publisher was removed</h3>
+        }
+        else
+        {
 
-<div class="btn-group">
-    @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
-</div>
+            <h4>Publisher: @subscription.Publisher.Title</h4>
+            <h4>Subscription period: @subscription.SubscriptionPeriod</h4>
+            <h4>Expiration date: @subscription.ExpirationDate.ToShortDateString()</h4>
+            <h4>
+                Status:
+                @if (subscription.IsExpired == false)
+                {
+                    <span class="text-success">Active</span>
+                }
+                else
+                {
+                    <span class="text-danger">Expired</span>
+                }
+            </h4>
+            <a href="#" class="btn btn-dark">Details</a>
+        }
+        <hr />
+    }
+
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
+    </div>
+}
 
 
 

@@ -21,11 +21,12 @@ namespace Periodicals.Controllers
         }
         public ActionResult Index(int page = 1)
         {
-            int pageSize = 2;
-            int totalItems = _subscriptionService.CountSubscriptions();
             string userId = User.Identity.GetUserId();
 
-            if (page > Math.Ceiling(((double)totalItems / (double)pageSize)))
+            int pageSize = 2;
+            int totalItems = _subscriptionService.CountSubscriptionsForUser(userId);
+
+            if (page > Math.Ceiling(((double)totalItems / (double)pageSize)) && totalItems != 0)
             {
                 return View("NotFound");
             }
@@ -38,16 +39,23 @@ namespace Periodicals.Controllers
             return View(model);
         }
         [HttpGet]
-        public ActionResult New(int id)
+        public ActionResult New(int? id)
         {
+            if(id == null)
+            {
+                id = 1;
+            }
             string publisherToFindId = id.ToString();
             var userId = User.Identity.GetUserId();
-
-            var subscriptionsCount = _subscriptionService.CountSubscriptions();
 
             if (_subscriptionService.CheckIfSubscriptionExists(userId, publisherToFindId))
             {
                 return View("AlreadySubscribed");
+            }
+
+            if(!_subscriptionService.CheckIfSubscritpionPublisherExists(publisherToFindId))
+            {
+                return View("NotFound");
             }
 
             SubscriptionCreateViewModel model = new SubscriptionCreateViewModel

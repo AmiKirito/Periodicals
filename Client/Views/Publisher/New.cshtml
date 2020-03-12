@@ -1,0 +1,79 @@
+﻿@using Client.ViewModels
+@model PublisherCreateViewModel
+
+@{
+    ViewBag.Title = "New";
+}
+
+<h2>Create Publisher</h2>
+
+<script>
+    var firstAuthor = true;
+    var firstTopic = true;
+
+    $(document).ready(function (e) {
+        $("#ExistingAuthors").change(function () {
+            var alltext = $('input[name=Authors]').val();
+            var textval = $(":selected", this).val();
+
+            if (textval != '') {
+                if (firstAuthor) {
+                    firstAuthor = false;
+                    alltext += textval;
+                }
+                else {
+                    alltext += ';' + textval;
+                }
+            }
+
+            $('input[name=Authors]').val(alltext);
+        });
+        $("#ExistingTopics").change(function () {
+            var alltext = $('input[name=Topics]').val();
+            var textval = $(":selected", this).val();
+
+            if (textval != '') {
+                if (firstTopic) {
+                    firstTopic = false;
+                    alltext += textval;
+                }
+                else {
+                    alltext += ';' + textval;
+                }
+            }
+
+            $('input[name=Topics]').val(alltext);
+        })
+    });
+</script>
+
+@using (Html.BeginForm("New", "Publisher", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.EditorFor(model => model.Title)
+    </div>
+    <div class="form-group">
+        @Html.EditorFor(model => model.Desription)
+    </div>
+    <div class="form-group">
+        @Html.EditorFor(model => model.MonthlySubscriptionPrice)
+    </div>
+    <div class="form-group">
+        @Html.EditorFor(model => model.Authors)
+        @Html.DropDownListFor(model => model.ExistingAuthors, Model.ExistingAuthors, new { @class = "custom-select", @id = "ExistingAuthors" })
+    </div>
+    <div class="form-group">
+        @Html.EditorFor(model => model.Topics)
+        @Html.DropDownListFor(model => model.ExistingTopics, Model.ExistingTopics, new { @class = "custom-select", @id = "ExistingTopics" })
+    </div>
+
+    <div class="form-group">
+        @Html.TextBoxFor(model => model.Image, new { type = "file" })
+    </div>
+
+
+    <input type="submit" value="Create" />
+
+    @Html.ValidationSummary(true);
+}
+

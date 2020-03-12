@@ -7,6 +7,7 @@ namespace BLL.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public List<Publisher> Publishers { get; set; }
+        public Author() { }
         public Author(string id, string name)
         {
             Id = id;

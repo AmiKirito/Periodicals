@@ -33,10 +33,15 @@ namespace DAL.Repositories
 
             return doesExist;
         }
-
+        public int CountAllForUser(string userId)
+        {
+            var subscriptionsCountForUser = _context.Subscriptions.Where(s => s.UserId == userId).Count();
+            return subscriptionsCountForUser;
+        }
         public int CountAll()
         {
             var subscriptionsCount = _context.Subscriptions.Count();
+
             return subscriptionsCount;
         }
 
@@ -79,6 +84,7 @@ namespace DAL.Repositories
         public Publisher GetPublisherForSubscription(string publisherId)
         {
             var subscriptionPublisherEntity = _context.Publishers.Include("Authors").Where(p => p.Id == publisherId).First();
+
             Publisher subscriptionPublisher = new Publisher
             {
                 Id = subscriptionPublisherEntity.Id,
@@ -98,7 +104,39 @@ namespace DAL.Repositories
 
             return userBalance;
         }
-
+        public void PayForSubscription(string userId, int price)
+        {
+            _context.Users.OfType<UserEntity>().Where(u => u.Id == userId).First().AccountSum -= price;
+        }
+        public void SetSubscriptionPeriod(SubscriptionEntity subscriptionToAdd, string period, int monthlyPrice)
+        {
+            switch (period)
+            {
+                case "month":
+                    subscriptionToAdd.SubscriptionPeriod = "Monthly";
+                    subscriptionToAdd.Price = monthlyPrice;
+                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(1);
+                    break;
+                case "quarter":
+                    subscriptionToAdd.SubscriptionPeriod = "Quarter year";
+                    subscriptionToAdd.Price = monthlyPrice * 3;
+                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(3);
+                    break;
+                case "half":
+                    subscriptionToAdd.SubscriptionPeriod = "Half year";
+                    subscriptionToAdd.Price = monthlyPrice * 6;
+                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(6);
+                    break;
+                case "year":
+                    subscriptionToAdd.SubscriptionPeriod = "Annual";
+                    subscriptionToAdd.Price = monthlyPrice * 12;
+                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(12);
+                    break;
+                default:
+                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(1);
+                    break;
+            }
+        }
         public void LinkNewSubscription(string userId, string publisherId, string subscriptionPeriod)
         {
             var subscriptionPublisher = GetPublisherForSubscription(publisherId);
@@ -111,36 +149,23 @@ namespace DAL.Repositories
                 IsExpired = false
             };
 
-            switch (subscriptionPeriod)
-            {
-                case "month":
-                    subscriptionToAdd.SubscriptionPeriod = "Monthly";
-                    subscriptionToAdd.Price = subscriptionPublisher.MonthlySubscriptionPrice * 1;
-                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(1);
-                    break;
-                case "quarter":
-                    subscriptionToAdd.SubscriptionPeriod = "Quarter year";
-                    subscriptionToAdd.Price = subscriptionPublisher.MonthlySubscriptionPrice * 3;
-                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(3);
-                    break;
-                case "half":
-                    subscriptionToAdd.SubscriptionPeriod = "Half year";
-                    subscriptionToAdd.Price = subscriptionPublisher.MonthlySubscriptionPrice * 6;
-                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(6);
-                    break;
-                case "year":
-                    subscriptionToAdd.SubscriptionPeriod = "Annual";
-                    subscriptionToAdd.Price = subscriptionPublisher.MonthlySubscriptionPrice * 12;
-                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(12);
-                    break;
-                default:
-                    subscriptionToAdd.ExpirationDate = DateTime.UtcNow.AddMonths(1);
-                    break;
-            }
+            SetSubscriptionPeriod(subscriptionToAdd, subscriptionPeriod, subscriptionPublisher.MonthlySubscriptionPrice);
+            PayForSubscription(userId, subscriptionToAdd.Price);
 
-            _context.Users.OfType<UserEntity>().Where(u => u.Id == userId).First().AccountSum -= subscriptionToAdd.Price;
             _context.Subscriptions.Add(subscriptionToAdd);
             _context.SaveChanges();
+        }
+
+        public bool CheckForSubscriptionPublisher(string publisherId)
+        {
+            if(_context.Publishers.Any(p => p.Id == publisherId))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

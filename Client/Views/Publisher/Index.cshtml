@@ -1,0 +1,25 @@
+﻿@using Client.HtmlHelpers
+@using Client.ViewModels
+@model PublisherViewModel
+
+@{
+    ViewBag.Title = "Publishers";
+}
+
+<div class="row text-center pt-2">
+    @foreach (var publisher in Model.Publishers)
+    {
+        <a href="@Url.Action("Details", "Publisher", new { id = Convert.ToInt32(publisher.Id)})" class="col-3 light text-decoration-none">
+            <span>@publisher.Title</span>
+            <img class="col" src="@publisher.ImagePath" />
+        </a>
+    }
+</div>
+
+
+<div class="container text-center">
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
+    </div>
+</div>
+

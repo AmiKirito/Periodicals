@@ -8,18 +8,20 @@ namespace BLL.Models
         public string Title { get; set; }
         public string Desription { get; set; }
         public int MonthlySubscriptionPrice { get; set; }
+        public string ImagePath { get; set; }
         public List<Author> Authors { get; set; }
         public List<Topic> Topics { get; set; }
         public List<Subscription> Subscriptions { get; set; }
         public bool IsRemoved { get; set; }
         public Publisher() { }
-        public Publisher(string id, string title, string description, int monthlyPrice)
+        public Publisher(string id, string title, string description, int monthlyPrice, string imagePath)
         {
             Id = id;
             Title = title;
             Desription = description;
             MonthlySubscriptionPrice = monthlyPrice;
             IsRemoved = false;
+            ImagePath = imagePath;
             Authors = new List<Author>();
             Topics = new List<Topic>();
             Subscriptions = new List<Subscription>();

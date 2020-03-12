@@ -143,12 +143,12 @@ namespace Periodicals.Controllers
         {
             if(!ModelState.IsValid)
             {
-                return View();
+                return RedirectToAction("Balance");
             }
 
             _accountService.AddSumToBalance(model.AddSum, User.Identity.Name);
 
-            return View("Cabinet");
+            return RedirectToAction("Cabinet");
         }
         [HttpGet]
         public ActionResult ChangePassword()

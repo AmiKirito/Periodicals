@@ -18,6 +18,21 @@ namespace BLL.Services
             return _publisherRepository.CountAll();
         }
 
+        public List<Author> GetExistingAuthors()
+        {
+            return _publisherRepository.GetAuthors();
+        }
+
+        public List<Topic> GetExistingTopics()
+        {
+            return _publisherRepository.GetTopics();
+        }
+
+        public Publisher GetPublisherById(string publisherId)
+        {
+            return _publisherRepository.GetById(publisherId);
+        }
+
         public List<Publisher> GetPublishers()
         {
             return _publisherRepository.GetAll();

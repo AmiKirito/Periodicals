@@ -1,5 +1,6 @@
 ﻿using BLL.IRepositories;
 using BLL.Models;
+using DAL.ModelsEntities;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +21,7 @@ namespace DAL.Repositories
 
         public List<Publisher> GetAll()
         {
-            var publishersQuerry = _context.Publishers.Include("Authors").Include("Topics").Include("Subscriptions").ToList();
+            var publishersQuerry = _context.Publishers.Include("Authors").Include("Topics").Include("Subscriptions").Where(p => p.IsRemoved == false).ToList();
             var publishers = new List<Publisher>();
             foreach (var publisherEntity in publishersQuerry)
             {
@@ -48,12 +49,13 @@ namespace DAL.Repositories
                 {
                     var subscription = new Subscription(subscriptionEntity.Id, subscriptionEntity.Price,
                                                         subscriptionEntity.ExpirationDate.Date, subscriptionEntity.PublisherId,
-                                                        subscriptionEntity.SubscriptionPeriod, subscriptionEntity.UserId);
+                                                        subscriptionEntity.SubscriptionPeriod, subscriptionEntity.UserId, subscriptionEntity.IsRemoved,
+                                                        subscriptionEntity.IsExpired);
                     subsriptions.Add(subscription);
                 }
 
                 var publisher = new Publisher(publisherEntity.Id, publisherEntity.Title, publisherEntity.Description,
-                                              publisherEntity.MonthlySubscriptionPrice, publisherEntity.ImagePath);
+                                              publisherEntity.MonthlySubscriptionPrice, publisherEntity.ImagePath, publisherEntity.IsRemoved);
 
                 authors.ForEach(author => publisher.Authors.Add(author));
                 topics.ForEach(topic => publisher.Topics.Add(topic));
@@ -72,7 +74,7 @@ namespace DAL.Repositories
             {
                 Id = publisherEntity.Id,
                 Title = publisherEntity.Title,
-                Desription = publisherEntity.Description,
+                Description = publisherEntity.Description,
                 ImagePath = publisherEntity.ImagePath,
                 MonthlySubscriptionPrice = publisherEntity.MonthlySubscriptionPrice,
                 IsRemoved = publisherEntity.IsRemoved,
@@ -104,8 +106,9 @@ namespace DAL.Repositories
             foreach (var subscriptionEntity in publisherEntity.Subscriptions)
             {
                 var subscription = new Subscription(subscriptionEntity.Id, subscriptionEntity.Price,
-                                                    subscriptionEntity.ExpirationDate.Date, subscriptionEntity.PublisherId,
-                                                    subscriptionEntity.SubscriptionPeriod, subscriptionEntity.UserId);
+                                                    subscriptionEntity.ExpirationDate, subscriptionEntity.PublisherId,
+                                                    subscriptionEntity.SubscriptionPeriod, subscriptionEntity.UserId,
+                                                    subscriptionEntity.IsRemoved, subscriptionEntity.IsExpired);
                 subsriptions.Add(subscription);
             }
 
@@ -150,6 +153,66 @@ namespace DAL.Repositories
             }
 
             return topics;
+        }
+        public string AddPublisher(Publisher publisher)
+        {
+            var existingTopics = _context.Topics.ToList();
+            var existingAuthors = _context.Authors.ToList();
+            var publisherEntity = new PublisherEntity
+            {
+                Id = (_context.Publishers.Count() + 1).ToString(),
+                Title = publisher.Title,
+                Description = publisher.Description,
+                MonthlySubscriptionPrice = publisher.MonthlySubscriptionPrice,
+                ImagePath = publisher.ImagePath,
+                IsRemoved = false
+            };
+
+            foreach (var topic in publisher.Topics)
+            {
+                if(existingTopics.Any(t => t.Title == topic.Title))
+                {
+                    publisherEntity.Topics.Add(existingTopics.Where(t => t.Title == topic.Title).First());
+                }
+                else
+                {
+                    var topicEntity = new TopicEntity
+                    {
+                        Id = (_context.Topics.Count() + 1).ToString(),
+                        Title = topic.Title
+                    };
+
+                    publisherEntity.Topics.Add(topicEntity);
+
+                    _context.Topics.Add(topicEntity);
+                }
+                _context.SaveChanges();
+            }
+            foreach (var author in publisher.Authors)
+            {
+                if(existingAuthors.Any(a => a.Name == author.Name))
+                {
+                    publisherEntity.Authors.Add(existingAuthors.Where(a => a.Name == author.Name).First());
+                }
+                else
+                {
+                    var authorEntity = new AuthorEntity
+                    {
+                        Id = (_context.Authors.Count() + 1).ToString(),
+                        Name = author.Name
+                    };
+
+                    publisherEntity.Authors.Add(authorEntity);
+
+                    _context.Authors.Add(authorEntity);
+                }
+                _context.SaveChanges();
+            }
+
+            _context.Publishers.Add(publisherEntity);
+            _context.SaveChanges();
+
+            return publisherEntity.Id;
         }
     }
 }

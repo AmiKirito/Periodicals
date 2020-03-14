@@ -44,14 +44,16 @@
                                 <a class="nav-link" href="@Url.Action("Register", "Account")">Register</a>
                             </li>
                         }
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown">
-                                <a class="dropdown-item" href="#">First</a>
-                                <a class="dropdown-item" href="#">Second</a>
-                                <a class="dropdown-item" href="#">Third</a>
-                            </div>
-                        </li>
+                        @if (!this.User.IsInRole("CommonUser") && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Publishers</a>
+                                <div class="dropdown-menu" aria-labelledby="dropdown">
+                                    <a class="dropdown-item" href="@Url.Action("Index", "Publisher")">All</a>
+                                    <a class="dropdown-item" href="@Url.Action("New", "Publisher")">Add</a>
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

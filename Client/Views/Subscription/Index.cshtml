@@ -20,10 +20,10 @@ else
         {
             <h4>@subscription.Publisher.Title</h4>
             <h3>The publisher was removed</h3>
+            <a href="@Url.Action("Remove", "Subscription", new { id = Convert.ToInt32(subscription.Id) })" class="btn btn-danger">Remove</a>
         }
         else
         {
-
             <h4>Publisher: @subscription.Publisher.Title</h4>
             <h4>Subscription period: @subscription.SubscriptionPeriod</h4>
             <h4>Expiration date: @subscription.ExpirationDate.ToShortDateString()</h4>
@@ -38,7 +38,7 @@ else
                     <span class="text-danger">Expired</span>
                 }
             </h4>
-            <a href="#" class="btn btn-dark">Details</a>
+            <a href="@Url.Action("Remove", "Subscription", new { id = Convert.ToInt32(subscription.Id) })" class="btn btn-danger">Remove</a>
         }
         <hr />
     }

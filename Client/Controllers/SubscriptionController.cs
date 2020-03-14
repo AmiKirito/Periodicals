@@ -31,7 +31,7 @@ namespace Periodicals.Controllers
                 return View("NotFound");
             }
 
-            IEnumerable<Subscription> subscriptionsPerPage = _subscriptionService.GetSubscriptions(userId).Skip((page - 1) * pageSize).Take(pageSize);
+            IEnumerable<Subscription> subscriptionsPerPage = _subscriptionService.GetSubscriptions(userId).OrderBy(s => s.ExpirationDate).Skip((page - 1) * pageSize).Take(pageSize);
             PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = totalItems };
 
             SubscriptionViewModel model = new SubscriptionViewModel { Subscriptions = subscriptionsPerPage, PageInfo = pageInfo };
@@ -82,6 +82,18 @@ namespace Periodicals.Controllers
             }
 
             _subscriptionService.RegisterNewSubscription(model.UserId, model.Publisher.Id, model.SubscriptionPeriod);
+
+            return RedirectToAction("Index", "Subscription");
+        }
+        public ActionResult Remove(int? id)
+        {
+            if(id == null)
+            {
+                return View("NotFound");
+            }
+
+            var subscriptionId = id.ToString();
+            _subscriptionService.RemoveExistingSubscription(subscriptionId);
 
             return RedirectToAction("Index", "Subscription");
         }

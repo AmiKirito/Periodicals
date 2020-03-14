@@ -6,8 +6,8 @@ using BLL.IRepositories;
 using DAL;
 using BLL.Services;
 using BLL.IServices;
-using Client.App_Start;
-using Microsoft.Owin.Security;
+using Serilog;
+using System;
 
 namespace Client.Utils
 {
@@ -18,6 +18,14 @@ namespace Client.Utils
             var builder = new ContainerBuilder();
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.Register<ILogger>((c, p) =>
+                {
+                    return new LoggerConfiguration()
+                    .WriteTo.RollingFile(
+                        AppDomain.CurrentDomain.BaseDirectory.ToString() + "App_Data" + "\\" + "Logs" +
+                                                "\\" + $"Log-{DateTime.UtcNow.ToShortDateString()}.txt"
+                        ).CreateLogger();
+                }).SingleInstance();
 
             builder.RegisterType<AppDbContext>().AsSelf();
 

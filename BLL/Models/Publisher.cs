@@ -6,7 +6,7 @@ namespace BLL.Models
     {
         public string Id { get; set; }
         public string Title { get; set; }
-        public string Desription { get; set; }
+        public string Description { get; set; }
         public int MonthlySubscriptionPrice { get; set; }
         public string ImagePath { get; set; }
         public List<Author> Authors { get; set; }
@@ -14,13 +14,13 @@ namespace BLL.Models
         public List<Subscription> Subscriptions { get; set; }
         public bool IsRemoved { get; set; }
         public Publisher() { }
-        public Publisher(string id, string title, string description, int monthlyPrice, string imagePath)
+        public Publisher(string id, string title, string description, int monthlyPrice, string imagePath, bool isRemoved)
         {
             Id = id;
             Title = title;
-            Desription = description;
+            Description = description;
             MonthlySubscriptionPrice = monthlyPrice;
-            IsRemoved = false;
+            IsRemoved = isRemoved;
             ImagePath = imagePath;
             Authors = new List<Author>();
             Topics = new List<Topic>();

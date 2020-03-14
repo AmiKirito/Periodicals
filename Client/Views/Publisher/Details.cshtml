@@ -6,7 +6,7 @@
 }
 
 <h3>@Model.Publisher.Title</h3>
-<h3>@Model.Publisher.Description</h3>
+<h3>@Model.Publisher.Desription</h3>
 <img height="300" width="300" src="@Model.Publisher.ImagePath" />
 <h3>Authors:</h3>
 @foreach (var author in Model.Publisher.Authors)
@@ -22,16 +22,7 @@
 {
     if (Model.Publisher.Subscriptions.Any(s => s.UserId == Model.UserId))
     {
-        if ((Model.Publisher.Subscriptions.Where(s => s.PublisherId == Model.Publisher.Id && s.UserId == Model.UserId && s.IsRemoved == false && s.IsExpired == false).Any()) &&
-             (Model.Publisher.Subscriptions.Where(s => s.PublisherId == Model.Publisher.Id && s.UserId == Model.UserId).Count() >= 1))
-        {
-            <span class="alert alert-primary">Subscribed</span>
-        }
-        else
-        {
-            <a class="btn btn-info" href="@Url.Action("New", "Subscription", new { id = Convert.ToInt32(Model.Publisher.Id)})">Subscribe</a>
-        }
-
+        <span class="alert alert-primary">Subscribed</span>
     }
     else
     {

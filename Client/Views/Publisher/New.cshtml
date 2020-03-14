@@ -27,7 +27,6 @@
             }
 
             $('input[name=Authors]').val(alltext);
-            $("#ExistingAuthors option:selected").remove();
         });
         $("#ExistingTopics").change(function () {
             var alltext = $('input[name=Topics]').val();
@@ -44,7 +43,6 @@
             }
 
             $('input[name=Topics]').val(alltext);
-            $("#ExistingTopics option:selected").remove();
         })
     });
 </script>
@@ -52,35 +50,25 @@
 @using (Html.BeginForm("New", "Publisher", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="form-group">
-        @Html.LabelFor(model => model.Title)
         @Html.EditorFor(model => model.Title)
-        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.Description)
-        @Html.EditorFor(model => model.Description)
-        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        @Html.EditorFor(model => model.Desription)
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.MonthlySubscriptionPrice)
         @Html.EditorFor(model => model.MonthlySubscriptionPrice)
-        @Html.ValidationMessageFor(model => model.MonthlySubscriptionPrice, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         @Html.EditorFor(model => model.Authors)
-        @Html.ValidationMessageFor(model => model.Authors, "", new { @class = "text-danger" })
-        @Html.DropDownList("ExistingAuthors", Model.ExistingAuthors, new { @class = "custom-select", @id = "ExistingAuthors" })
+        @Html.DropDownListFor(model => model.ExistingAuthors, Model.ExistingAuthors, new { @class = "custom-select", @id = "ExistingAuthors" })
     </div>
     <div class="form-group">
         @Html.EditorFor(model => model.Topics)
-        @Html.ValidationMessageFor(model => model.Topics, "", new { @class = "text-danger" })
-        @Html.DropDownList("ExistingTopics", Model.ExistingTopics, new { @class = "custom-select", @id = "ExistingTopics" })
+        @Html.DropDownListFor(model => model.ExistingTopics, Model.ExistingTopics, new { @class = "custom-select", @id = "ExistingTopics" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Image, new { @class = "text-dark" })
-        @Html.TextBoxFor(model => model.Image, new { type = "file", @class = "form-control-file" })
-        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+        @Html.TextBoxFor(model => model.Image, new { type = "file" })
     </div>
 
 

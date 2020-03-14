@@ -23,7 +23,7 @@ namespace DAL.Repositories
 
             try
             {
-                result = _context.Subscriptions.Where(s => s.UserId == userId && s.PublisherId == publisherId && !(s.IsExpired == true || s.IsRemoved == true)).First();
+                result = _context.Subscriptions.Where(s => s.UserId == userId && s.PublisherId == publisherId).First();
             } catch { }
 
             if(!string.IsNullOrEmpty(result.Id))
@@ -35,7 +35,7 @@ namespace DAL.Repositories
         }
         public int CountAllForUser(string userId)
         {
-            var subscriptionsCountForUser = _context.Subscriptions.Where(s => s.UserId == userId && s.IsRemoved == false).Count();
+            var subscriptionsCountForUser = _context.Subscriptions.Where(s => s.UserId == userId).Count();
             return subscriptionsCountForUser;
         }
         public int CountAll()
@@ -47,7 +47,7 @@ namespace DAL.Repositories
 
         public List<Subscription> GetAll(string userId)
         {
-            var subscriptionsQuery = _context.Subscriptions.Include("Publisher").Where(s => s.UserId == userId && s.IsRemoved == false).ToList();
+            var subscriptionsQuery = _context.Subscriptions.Include("Publisher").Where(s => s.UserId == userId).ToList();
             var subscriptions = new List<Subscription>();
 
             foreach (var subscriptionEntity in subscriptionsQuery)
@@ -57,7 +57,7 @@ namespace DAL.Repositories
 
                 publisher.Id = subscriptionEntity.Publisher.Id;
                 publisher.Title = subscriptionEntity.Publisher.Title;
-                publisher.Description = subscriptionEntity.Publisher.Description;
+                publisher.Desription = subscriptionEntity.Publisher.Description;
                 publisher.IsRemoved = subscriptionEntity.Publisher.IsRemoved;
 
                 subscription.Id = subscriptionEntity.Id;
@@ -67,20 +67,15 @@ namespace DAL.Repositories
                 subscription.Publisher = publisher;
                 subscription.SubscriptionPeriod = subscriptionEntity.SubscriptionPeriod;
                 subscription.UserId = userId;
-                subscription.IsRemoved = subscriptionEntity.IsRemoved;
 
                 if(subscriptionEntity.ExpirationDate > DateTime.UtcNow)
                 {
-                    subscriptionEntity.IsExpired = false;
                     subscription.IsExpired = false;
                 }
                 else
                 {
-                    subscriptionEntity.IsExpired = true;
                     subscription.IsExpired = true;
                 }
-
-                _context.SaveChanges();
 
                 subscriptions.Add(subscription);
             }
@@ -94,7 +89,7 @@ namespace DAL.Repositories
             {
                 Id = subscriptionPublisherEntity.Id,
                 Title = subscriptionPublisherEntity.Title,
-                Description = subscriptionPublisherEntity.Description,
+                Desription = subscriptionPublisherEntity.Description,
                 MonthlySubscriptionPrice = subscriptionPublisherEntity.MonthlySubscriptionPrice,
                 IsRemoved = subscriptionPublisherEntity.IsRemoved
             };
@@ -151,8 +146,7 @@ namespace DAL.Repositories
                 Id = (CountAll() + 1).ToString(),
                 UserId = userId,
                 PublisherId = publisherId,
-                IsExpired = false,
-                IsRemoved = false
+                IsExpired = false
             };
 
             SetSubscriptionPeriod(subscriptionToAdd, subscriptionPeriod, subscriptionPublisher.MonthlySubscriptionPrice);
@@ -172,13 +166,6 @@ namespace DAL.Repositories
             {
                 return false;
             }
-        }
-        public void RemoveSubscription(string subscriptionId)
-        {
-            var subscriptionToRemove = _context.Subscriptions.Where(s => s.Id == subscriptionId).First();
-            subscriptionToRemove.IsRemoved = true;
-
-            _context.SaveChanges();
         }
     }
 }

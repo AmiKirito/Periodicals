@@ -7,16 +7,25 @@ using System.Linq;
 using System.Web.Mvc;
 using System;
 using Microsoft.AspNet.Identity;
+using Serilog;
+using System.Web;
+using System.IO;
 
 namespace Periodicals.Controllers
 {
+    [Authorize(Roles = "Moderator, Admin, SuperAdmin")]
     public class PublisherController : Controller
     {
         private readonly IPublisherService _publisherService;
-        public PublisherController(IPublisherService publisherService)
+        private readonly ILogger _logger;
+
+
+        public PublisherController(IPublisherService publisherService, ILogger logger)
         {
             _publisherService = publisherService;
+            _logger = logger;
         }
+        [AllowAnonymous]
         public ActionResult Index(int page = 1)
         {
             int pageSize = 8;
@@ -33,23 +42,31 @@ namespace Periodicals.Controllers
 
             return View(model);
         }
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            try
             {
-                id = 1;
+                if (id == null)
+                {
+                    id = 1;
+                }
+
+                var publisherModel = _publisherService.GetPublisherById(id.ToString());
+                var userId = User.Identity.GetUserId();
+
+                var model = new PublisherDetailsViewModel
+                {
+                    Publisher = publisherModel,
+                    UserId = userId
+                };
+
+                return View(model);
+            } catch (Exception e) {
+                var exceptionType = e.GetType().Name;
+                var exceptionMessage = e.Message;
+                return RedirectToAction("Index", "Error", new { exceptionType, exceptionMessage });
             }
-
-            var publisherModel = _publisherService.GetPublisherById(id.ToString());
-            var userId = User.Identity.GetUserId();
-
-            var model = new PublisherDetailsViewModel
-            {
-                Publisher = publisherModel,
-                UserId = userId
-            };
-
-            return View(model);
         }
         [HttpGet]
         public ActionResult New()
@@ -83,15 +100,73 @@ namespace Periodicals.Controllers
             {
                 ModelState.AddModelError("ImageUpload", "This field is required");
             }
-
             if(!validImageTypes.Any(model.Image.ContentType.Contains))
             {
                 ModelState.AddModelError("ImageUpload", "Please choose either jpg, jpeg or png format file");
             }
 
-            return RedirectToAction("Details", "Publisher",  new { id = 1 });
-        }
+            Publisher publisherToAdd = new Publisher();
 
+            publisherToAdd.Title = model.Title;
+            publisherToAdd.Description = model.Description;
+            publisherToAdd.MonthlySubscriptionPrice = model.MonthlySubscriptionPrice;
+
+            publisherToAdd.ImagePath = GenerateImageSavePath(model.Image);
+            publisherToAdd.Authors = ConvertToListAuthors(model.Authors);
+            publisherToAdd.Topics = ConvertToListTopics(model.Topics);
+
+            var newPublisherId = _publisherService.AddNewPublisher(publisherToAdd);
+
+            return RedirectToAction("Details", "Publisher",  new { id = newPublisherId });
+        }
+        private string GenerateImageSavePath(HttpPostedFileBase image)
+        {
+            string uniqueImageLocation = "/Content/images/publisherImages";
+            var fileName = Path.GetFileName(image.FileName);
+            var guidFileName = $"{Guid.NewGuid()}_{fileName}";
+            uniqueImageLocation = uniqueImageLocation + "/" + guidFileName;
+
+            var imagesFilePath = "~/Content/images/publisherImages";
+            var saveFilePath = Path.Combine(imagesFilePath, guidFileName);
+
+            image.SaveAs(Server.MapPath(saveFilePath));
+
+            return uniqueImageLocation;
+        }
+        private List<Author> ConvertToListAuthors(string authorsString)
+        {
+            var authorsList = new List<Author>();
+            var authorsArray = authorsString.Split(';');
+
+            foreach (var authorString in authorsArray)
+            {
+                var author = new Author
+                {
+                    Name = authorString
+                };
+
+                authorsList.Add(author);
+            }
+
+            return authorsList;
+        }
+        private List<Topic> ConvertToListTopics(string topicsString)
+        {
+            var topicsList = new List<Topic>();
+            var topicsArray = topicsString.Split(';');
+
+            foreach (var topicString in topicsArray)
+            {
+                var topic = new Topic
+                {
+                    Title = topicString
+                };
+
+                topicsList.Add(topic);
+            }
+
+            return topicsList;
+        }
         private List<SelectListItem> ConvertToSelectListAuthors(List<Author> authors)
         {
             var authorsSelectList = new List<SelectListItem>();

@@ -10,5 +10,6 @@ namespace BLL.IRepositories
         Publisher GetById(string id);
         List<Author> GetAuthors();
         List<Topic> GetTopics();
+        string AddPublisher(Publisher publisher);
     }
 }

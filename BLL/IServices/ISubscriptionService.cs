@@ -13,5 +13,6 @@ namespace BLL.IServices
         int GetUserBalanceForSubscription(string userId);
         void RegisterNewSubscription(string userId, string publisherId, string subscriptionPeriod);
         bool CheckIfSubscritpionPublisherExists(string publisherId);
+        void RemoveExistingSubscription(string subscriptionId);
     }
 }

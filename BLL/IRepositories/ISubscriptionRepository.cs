@@ -12,5 +12,6 @@ namespace BLL.IRepositories
         bool CheckForSubscriptionPublisher(string publisherId);
         int GetUserBalance(string userId);
         void LinkNewSubscription(string userId, string publisherId, string subscriptionPeriod);
+        void RemoveSubscription(string subscriptionId);
     }
 }

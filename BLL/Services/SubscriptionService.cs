@@ -47,5 +47,10 @@ namespace BLL.Services
         {
             _subscriptionRepository.LinkNewSubscription(userId, publisherId, subscriptionPeriod);
         }
+
+        public void RemoveExistingSubscription(string subscriptionId)
+        {
+            _subscriptionRepository.RemoveSubscription(subscriptionId);
+        }
     }
 }

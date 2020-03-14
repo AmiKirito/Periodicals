@@ -15,5 +15,6 @@ namespace DAL.ModelsEntities
         public string UserId { get; set; }
         public UserEntity User { get; set; }
         public bool IsExpired { get; set; }
+        public bool IsRemoved { get; set; }
     }
 }

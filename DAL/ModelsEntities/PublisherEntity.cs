@@ -15,5 +15,11 @@ namespace DAL.ModelsEntities
         public List<TopicEntity> Topics { get; set; }
         public List<SubscriptionEntity> Subscriptions { get; set; }
         public bool IsRemoved { get; set; }
+        public PublisherEntity()
+        {
+            Authors = new List<AuthorEntity>();
+            Topics = new List<TopicEntity>();
+            Subscriptions = new List<SubscriptionEntity>();
+        }
     }
 }

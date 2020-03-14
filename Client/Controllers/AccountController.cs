@@ -111,7 +111,17 @@ namespace Periodicals.Controllers
             
             if(!result.Succeeded)
             {
-                ModelState.AddModelError("errorAttempt", "Invalid registration attempt");
+                ModelState.AddModelError("errorRegisterAttempt", "Invalid registration attempt");
+                return View(model);
+            }
+
+            var userId = UserManager.FindByName(user.UserName).Id;
+
+            var roleResult = UserManager.AddToRole(userId, "CommonUser");
+
+            if(!roleResult.Succeeded)
+            {
+                ModelState.AddModelError("errorRegisterAttempt", "Invalid registration attempt");
                 return View(model);
             }
 
@@ -148,7 +158,7 @@ namespace Periodicals.Controllers
 
             _accountService.AddSumToBalance(model.AddSum, User.Identity.Name);
 
-            return RedirectToAction("Cabinet");
+            return RedirectToAction("Balance");
         }
         [HttpGet]
         public ActionResult ChangePassword()

@@ -44,9 +44,11 @@
   <ItemGroup>
     <Compile Include="EnumExtensions\EnumExtensions.cs" />
     <Compile Include="IRepositories\IAccountRepository.cs" />
+    <Compile Include="IRepositories\IAdminRepository.cs" />
     <Compile Include="IRepositories\IPublisherRepository.cs" />
     <Compile Include="IRepositories\ISubscriptionRepository.cs" />
     <Compile Include="IServices\IAccountService.cs" />
+    <Compile Include="IServices\IAdminService.cs" />
     <Compile Include="IServices\IPublisherService.cs" />
     <Compile Include="IServices\ISubscriptionService.cs" />
     <Compile Include="Models\Author.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\PublisherService.cs" />
     <Compile Include="Services\SubscriptionService.cs" />
   </ItemGroup>

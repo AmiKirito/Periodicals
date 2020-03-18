@@ -8,6 +8,10 @@ using BLL.Services;
 using BLL.IServices;
 using Serilog;
 using System;
+using Client.App_Start;
+using Microsoft.AspNet.Identity.EntityFramework;
+using DAL.ModelsEntities;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Client.Utils
 {
@@ -28,6 +32,9 @@ namespace Client.Utils
                 }).SingleInstance();
 
             builder.RegisterType<AppDbContext>().AsSelf();
+
+            builder.RegisterType<AdminService>().As<IAdminService>();
+            builder.RegisterType<AdminRepository>().As<IAdminRepository>();
 
             builder.RegisterType<PublisherService>().As<IPublisherService>();
             builder.RegisterType<PublisherRepository>().As<IPublisherRepository>();

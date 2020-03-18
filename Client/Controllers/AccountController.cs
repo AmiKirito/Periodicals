@@ -186,10 +186,5 @@ namespace Periodicals.Controllers
                     return View(model);
             }
         }
-        [Authorize(Roles = "Moderator,Admin,SuperAdmin")]
-        public ActionResult Users()
-        {
-            return View();
-        }
     }
 }

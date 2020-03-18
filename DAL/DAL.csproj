@@ -120,6 +120,7 @@
     <Compile Include="ModelsEntities\UserEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\AdminRepository.cs" />
     <Compile Include="Repositories\PublisherRepository.cs" />
     <Compile Include="Repositories\SubscriptionRepository.cs" />
   </ItemGroup>

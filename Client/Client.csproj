@@ -182,6 +182,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PublisherController.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="ViewModels\BalanceViewModel.cs" />
     <Compile Include="ViewModels\CabinetViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModels\CreateUserViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="ViewModels\PublisherCreateViewModel.cs" />
@@ -275,6 +277,7 @@
     <Content Include="Views\Publisher\New.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Publisher\Edit.cshtml" />
+    <Content Include="Views\Admin\Users.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Logs\" />

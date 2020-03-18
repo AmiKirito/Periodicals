@@ -9,6 +9,10 @@ using System;
 
 namespace Client.App_Start
 {
+    public class ApplicationUserStore : UserStore<UserEntity>
+    {
+        
+    }
     public class ApplicationUserManager : UserManager<UserEntity>
     {
         public ApplicationUserManager(IUserStore<UserEntity> store)
@@ -40,6 +44,11 @@ namespace Client.App_Start
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
             return manager;
+        }
+
+        internal void SetLockoutEnabled(string userId)
+        {
+            throw new NotImplementedException();
         }
     }
 

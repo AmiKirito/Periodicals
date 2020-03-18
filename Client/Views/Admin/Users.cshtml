@@ -1,0 +1,36 @@
+﻿@model  List<Tuple<string, string, string, bool>>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+
+@foreach (var user in Model)
+{
+    if (User.Identity.Name != user.Item2)
+    {
+        <h1>Username: @user.Item2 </h1>
+        <h3>Role: @user.Item3</h3>
+        <h3>
+            Status:
+            @if (user.Item4 == true)
+            {
+                <span class="text-danger">Locked</span>
+            }
+            else
+            {
+                <span class="text-success">Active</span>
+            }
+        </h3>
+        if (user.Item4)
+        {
+            <a href="@Url.Action("UnblockUser", "Admin", new { userId = user.Item1})" class="btn btn-success">Ublock</a>
+        }
+        else
+        {
+            <a href="@Url.Action("BlockUser", "Admin", new { userId = user.Item1})" class="btn btn-danger">Block</a>
+        }
+        <hr />
+    }
+}

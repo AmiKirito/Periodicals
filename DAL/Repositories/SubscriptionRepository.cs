@@ -38,13 +38,6 @@ namespace DAL.Repositories
             var subscriptionsCountForUser = _context.Subscriptions.Where(s => s.UserId == userId && s.IsRemoved == false).Count();
             return subscriptionsCountForUser;
         }
-        public int CountAll()
-        {
-            var subscriptionsCount = _context.Subscriptions.Count();
-
-            return subscriptionsCount;
-        }
-
         public List<Subscription> GetAll(string userId)
         {
             var subscriptionsQuery = _context.Subscriptions.Include("Publisher").Where(s => s.UserId == userId && s.IsRemoved == false).ToList();
@@ -53,12 +46,13 @@ namespace DAL.Repositories
             foreach (var subscriptionEntity in subscriptionsQuery)
             {
                 var subscription = new Subscription();
-                var publisher = new Publisher();
-
-                publisher.Id = subscriptionEntity.Publisher.Id;
-                publisher.Title = subscriptionEntity.Publisher.Title;
-                publisher.Description = subscriptionEntity.Publisher.Description;
-                publisher.IsRemoved = subscriptionEntity.Publisher.IsRemoved;
+                Publisher publisher = new Publisher
+                {
+                    Id = subscriptionEntity.Publisher.Id,
+                    Title = subscriptionEntity.Publisher.Title,
+                    Description = subscriptionEntity.Publisher.Description,
+                    IsRemoved = subscriptionEntity.Publisher.IsRemoved
+                };
 
                 subscription.Id = subscriptionEntity.Id;
                 subscription.Price = subscriptionEntity.Price;
@@ -148,7 +142,9 @@ namespace DAL.Repositories
 
             var subscriptionToAdd = new SubscriptionEntity
             {
-                Id = (CountAll() + 1).ToString(),
+                Id = (Convert.ToInt32(_context.Subscriptions.ToList()
+                .OrderByDescending(s => Convert.ToInt32(s.Id))
+                .ToList().First().Id) + 1).ToString(),
                 UserId = userId,
                 PublisherId = publisherId,
                 IsExpired = false,

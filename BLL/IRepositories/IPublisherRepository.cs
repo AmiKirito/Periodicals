@@ -11,5 +11,7 @@ namespace BLL.IRepositories
         List<Author> GetAuthors();
         List<Topic> GetTopics();
         string AddPublisher(Publisher publisher);
+        string UpdatePublisher(Publisher publisher);
+        void Remove(string publisherId);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BLL.IRepositories;
 using BLL.Models;
 using DAL.ModelsEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +16,7 @@ namespace DAL.Repositories
         }
         public int CountAll()
         {
-            var publishersCount = _context.Publishers.Count();
+            var publishersCount = _context.Publishers.Where(p => p.IsRemoved == false).Count();
             return publishersCount;
         }
 
@@ -160,7 +161,9 @@ namespace DAL.Repositories
             var existingAuthors = _context.Authors.ToList();
             var publisherEntity = new PublisherEntity
             {
-                Id = (_context.Publishers.Count() + 1).ToString(),
+                Id = (Convert.ToInt32(_context.Publishers.ToList()
+                        .OrderByDescending(p => Convert.ToInt32(p.Id))
+                        .ToList().First().Id) + 1).ToString(),
                 Title = publisher.Title,
                 Description = publisher.Description,
                 MonthlySubscriptionPrice = publisher.MonthlySubscriptionPrice,
@@ -178,7 +181,9 @@ namespace DAL.Repositories
                 {
                     var topicEntity = new TopicEntity
                     {
-                        Id = (_context.Topics.Count() + 1).ToString(),
+                        Id = (Convert.ToInt32(_context.Topics.ToList()
+                                .OrderByDescending(t => Convert.ToInt32(t.Id))
+                                .ToList().First().Id) + 1).ToString(),
                         Title = topic.Title
                     };
 
@@ -198,7 +203,9 @@ namespace DAL.Repositories
                 {
                     var authorEntity = new AuthorEntity
                     {
-                        Id = (_context.Authors.Count() + 1).ToString(),
+                        Id = (Convert.ToInt32(_context.Authors.ToList()
+                            .OrderByDescending(a => Convert.ToInt32(a.Id))
+                            .ToList().First().Id) + 1).ToString(),
                         Name = author.Name
                     };
 
@@ -213,6 +220,86 @@ namespace DAL.Repositories
             _context.SaveChanges();
 
             return publisherEntity.Id;
+        }
+
+        public string UpdatePublisher(Publisher publisherToChange)
+        {
+            var publisherEntity = _context.Publishers.Include("Authors").Include("Topics").Include("Subscriptions").Where(p => p.Id == publisherToChange.Id).First();
+
+            publisherEntity.Title = publisherToChange.Title;
+            publisherEntity.Description = publisherToChange.Title;
+            publisherEntity.MonthlySubscriptionPrice = publisherToChange.MonthlySubscriptionPrice;
+            publisherEntity.ImagePath = publisherToChange.ImagePath;
+            publisherEntity.IsRemoved = publisherToChange.IsRemoved;
+
+            publisherEntity.Authors = new List<AuthorEntity>();
+            _context.SaveChanges();
+
+            foreach (var author in publisherToChange.Authors)
+            {
+                var authorEntity = new AuthorEntity
+                {
+                    Name = author.Name
+                };
+
+                if (!_context.Authors.Any(a => a.Name == author.Name))
+                {
+                    authorEntity.Id = (Convert.ToInt32(_context.Authors.ToList()
+                                        .OrderByDescending(a => Convert.ToInt32(a.Id))
+                                        .ToList().First().Id) + 1).ToString();
+
+                    _context.Authors.Add(authorEntity);
+                    publisherEntity.Authors.Add(authorEntity);
+                }
+                else
+                {
+                    authorEntity = _context.Authors.Where(a => a.Name == author.Name).First();
+                    publisherEntity.Authors.Add(authorEntity);
+                }
+
+                _context.SaveChanges();
+            }
+
+            publisherEntity.Topics = new List<TopicEntity>();
+            _context.SaveChanges();
+
+            foreach (var topic in publisherToChange.Topics)
+            {
+                var topicEntity = new TopicEntity
+                {
+                    Title = topic.Title
+                };
+
+                if (!_context.Topics.Any(t => t.Title == topic.Title))
+                {
+                    topicEntity.Id = (Convert.ToInt32(_context.Topics.ToList()
+                                    .OrderByDescending(t => Convert.ToInt32(t.Id))
+                                    .ToList().First().Id) + 1).ToString();
+
+                    _context.Topics.Add(topicEntity);
+                    publisherEntity.Topics.Add(topicEntity);
+                }
+                else
+                {
+                    topicEntity = _context.Topics.Where(t => t.Title == topic.Title).First();
+                    publisherEntity.Topics.Add(topicEntity);
+                }
+
+                _context.SaveChanges();               
+            }
+
+            _context.SaveChanges();
+
+            return publisherToChange.Id;
+        }
+
+        public void Remove(string publisherId)
+        {
+            var publisherToRemove = _context.Publishers.Where(p => p.Id == publisherId).First();
+
+            publisherToRemove.IsRemoved = true;
+
+            _context.SaveChanges();
         }
     }
 }

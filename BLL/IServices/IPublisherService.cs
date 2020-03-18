@@ -11,5 +11,7 @@ namespace BLL.IServices
         List<Author> GetExistingAuthors();
         List<Topic> GetExistingTopics();
         string AddNewPublisher(Publisher publisher);
+        string UpdatePublisher(Publisher publisher);
+        void RemovePublisher(string publisherId);
     }
 }

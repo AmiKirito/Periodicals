@@ -4,22 +4,122 @@
 
 @{
     ViewBag.Title = "Publishers";
+    bool sortTitle = ViewBag.SortTitle;
+    bool sortPrice = ViewBag.SortPrice;
 }
 
-<div class="row text-center pt-2">
-    @foreach (var publisher in Model.Publishers)
-    {
-        <a href="@Url.Action("Details", "Publisher", new { id = Convert.ToInt32(publisher.Id)})" class="col-3 light text-decoration-none">
-            <span>@publisher.Title</span>
-            <img class="col" src="@publisher.ImagePath" />
-        </a>
-    }
-</div>
+<script>
+    
 
 
-<div class="container text-center">
-    <div class="btn-group">
-        @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
+    $(document).ready(function () {
+        $("#sortPrice").change(function () {
+            if ($('input[name=sortPrice]').val() == "true") {
+                $('input[name=sortPrice]').val("false");
+            }
+            else {
+                $('input[name=sortPrice]').val("true");
+            }
+        });
+        $("#sortTitle").change(function () {
+            if ($('input[name=sortTitle]').val() == "true") {
+                $('input[name=sortTitle]').val("false");
+            }
+            else {
+                $('input[name=sortTitle]').val("true");
+            }
+        });
+
+        $("#filterBtn").click(function (e) {
+            e.preventDefault();
+
+            var sortTitle;
+            var sortPrice;
+
+            if ($('input[name=sortTitle]').val() != "false" && $('input[name=sortTitle]').val() != "true") {
+                sortTitle = '';
+            } else {
+                sortTitle = $('input[name=sortTitle]').val();
+            }
+            if ($('input[name=sortPrice]').val() != "false" && $('input[name=sortPrice]').val() != "true") {
+
+                sortPrice = '';
+            } else {
+                sortPrice = $('input[name=sortPrice]').val();
+            }
+
+            var filterTopic = $("#filterTopic").val();
+
+            window.location.href = '@Url.Action("Index", "Publisher")?sortTitle=' + sortTitle
+                + '&sortPrice=' + sortPrice + '&filterTopic=' + filterTopic;
+        });
+        $("#searchBtn").click(function (e) {
+            e.preventDefault();
+
+            var search = $("#search").val();
+
+            window.location.href = '@Url.Action("Index", "Publisher")?search=' + search;
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="col">
+        @if (Model.Publishers.Count() == 0)
+        {
+            <h1>No appropriate results were found</h1>
+        }
+        else
+        {
+            <div class="row text-center pt-2">
+                @foreach (var publisher in Model.Publishers)
+                {
+                    <a href="@Url.Action("Details", "Publisher", new { id = Convert.ToInt32(publisher.Id)})" class="col-3 light text-decoration-none">
+                        <span>@publisher.Title</span>
+                        <img class="col" src="@publisher.ImagePath" />
+                    </a>
+                }
+            </div>
+            <div class="container text-center mt-3">
+                <div class="btn-group">
+                    @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-3">
+        <div class="container">
+            <div class="d-flex justify-content-between pt-1 pb-1">
+                <div class="flex-row">
+                    <span class="size">Sort by title</span>
+                    <input id="sortTitle" type="checkbox" class="custom-checkbox" value="@sortTitle" name="sortTitle" />
+                </div>
+                <div class="flex-row justify-content-between">
+                    <span class="size">Sort by price</span>
+                    <input id="sortPrice" type="checkbox" value="@sortPrice" name="sortPrice" />
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <div class="flex-column">
+                    @Html.DropDownList("filterTopic", Model.ExistingTopics, new { @class = "custom-select" })
+                </div>
+                <div class="flex-column">
+                    <input type="submit" class="btn btn-primary" value="Filter" id="filterBtn" />
+                </div>
+            </div>
+            <div class="d-flex">
+                @Html.Editor("search", new { htmlAttributes = new { placeholder = "Search...", @class = "form-control p-2 mt-1" } })
+            </div>
+            <div class="d-flex justify-content-around">
+                <div class="flex-column">
+                    <input type="submit" class="btn btn-primary pt-3 pb-3 pl-5 pr-5 m-1" value="Search" id="searchBtn" />
+                </div>
+                <div class="flex-column">
+                    <a href="@Url.Action("Index", "Publisher")" class="btn btn-warning pt-3 pb-3 pl-3 pr-3 m-1">Reset</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

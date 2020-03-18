@@ -200,6 +200,7 @@
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="ViewModels\PublisherCreateViewModel.cs" />
     <Compile Include="ViewModels\PublisherDetailsViewModel.cs" />
+    <Compile Include="ViewModels\PublisherEditViewModel.cs" />
     <Compile Include="ViewModels\PublisherViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\SubscriptionCreateViewModel.cs" />
@@ -246,6 +247,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\selectScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -272,6 +274,7 @@
     <Content Include="Views\Publisher\Details.cshtml" />
     <Content Include="Views\Publisher\New.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Publisher\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Logs\" />

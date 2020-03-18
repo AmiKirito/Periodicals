@@ -27,7 +27,9 @@
             }
 
             $('input[name=Authors]').val(alltext);
-            $("#ExistingAuthors option:selected").remove();
+            if ($("#ExistingAuthors option:selected").val() != '') {
+                $("#ExistingAuthors option:selected").remove();
+            }
         });
         $("#ExistingTopics").change(function () {
             var alltext = $('input[name=Topics]').val();
@@ -44,7 +46,9 @@
             }
 
             $('input[name=Topics]').val(alltext);
-            $("#ExistingTopics option:selected").remove();
+            if ($("#ExistingTopics option:selected").val() != '') {
+                $("#ExistingTopics option:selected").remove();
+            }
         })
     });
 </script>

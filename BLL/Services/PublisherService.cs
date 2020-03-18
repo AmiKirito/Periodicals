@@ -42,5 +42,15 @@ namespace BLL.Services
         {
             return _publisherRepository.GetAll();
         }
+
+        public void RemovePublisher(string publisherId)
+        {
+            _publisherRepository.Remove(publisherId);
+        }
+
+        public string UpdatePublisher(Publisher publisher)
+        {
+            return _publisherRepository.UpdatePublisher(publisher);
+        }
     }
 }

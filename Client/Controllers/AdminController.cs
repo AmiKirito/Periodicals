@@ -47,9 +47,7 @@ namespace Periodicals.Controllers
                 return View("NotFound");
             }
 
-            var currentUserRoleName = UserManager.GetRoles(User.Identity.GetUserId()).First();
-            var currentUserRoleId = Convert.ToInt32(RoleManager.Roles.Where(r => r.Name == currentUserRoleName).First().Id);
-            List<Tuple<string, string, string, bool, bool>> preModel = new List<Tuple<string, string, string, bool, bool>>();
+            List<Tuple<string, string, string, bool, bool, string>> preModel = new List<Tuple<string, string, string, bool, bool, string>>();
             PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = totalItems };
 
             UsersViewModel model = new UsersViewModel();
@@ -57,10 +55,7 @@ namespace Periodicals.Controllers
             foreach (var userId in userIds)
             {
                 var user = UserManager.FindById(userId);
-                var userRoleName = UserManager.GetRoles(userId).First();
-                var userRoleId = Convert.ToInt32(RoleManager.Roles.Where(r => r.Name == userRoleName).First().Id);
                 bool isLocked = false;
-                bool canLock = false;
                 string username = UserManager.FindById(userId).UserName;
                 string role = UserManager.GetRoles(userId).FirstOrDefault();
 
@@ -68,12 +63,10 @@ namespace Periodicals.Controllers
                 {
                     isLocked = true;
                 }
-                if(userRoleId > currentUserRoleId)
-                {
-                    canLock = true;
-                }
 
-                preModel.Add(new Tuple<string, string, string, bool, bool>(userId, username, role, isLocked, canLock));
+                bool canLock = HasRights(userId);
+
+                preModel.Add(new Tuple<string, string, string, bool, bool, string>(userId, username, role, isLocked, canLock, userId));
             }
 
             model.Items = preModel;
@@ -85,30 +78,18 @@ namespace Periodicals.Controllers
         [HttpGet]
         public ActionResult CreateUser()
         {
-            var roles = RoleManager.Roles.ToList();
-            List<string> rolesList = new List<string>();
-            CreateUserViewModel model = new CreateUserViewModel();
+            CreateUserViewModel model = new CreateUserViewModel();   
 
-            rolesList.Add(roles.Where(r => r.Name == "CommonUser").First().Name);
-
-            if (User.IsInRole("Admin"))
-            {
-                rolesList.Add(roles.Where(r => r.Name == "Moderator").First().Name);
-            }                
-            if(User.IsInRole("SuperAdmin"))
-            {
-                rolesList.Add(roles.Where(r => r.Name == "Moderator").First().Name);
-                rolesList.Add(roles.Where(r => r.Name == "Admin").First().Name);
-            }
-
-            model.ExistingRoles = ConvertToSelectListRoles(rolesList);
+            model.ExistingRoles = GetRolesForUser();
 
             return View(model);
         }
+        [HttpPost]
         public ActionResult CreateUser(CreateUserViewModel model)
         {
             if(!ModelState.IsValid)
             {
+                model.ExistingRoles = GetRolesForUser();
                 return View(model);
             }
 
@@ -137,33 +118,47 @@ namespace Periodicals.Controllers
 
             return RedirectToAction("Users", "Admin");
         }
-        public ActionResult BlockUser(string userId, bool canLock)
+        public ActionResult BlockUser(string userId)
         {
-            if(!canLock)
+            if(!HasRights(userId))
             {
-                ViewBag.NoRight = "error";
-                return View("Users");
+                return View("Forbidden");
             }
             _adminService.BlockUser(userId);
 
             return RedirectToAction("Users", "Admin");
         }
-        public ActionResult UnblockUser(string userId, bool canUnlock)
+        public ActionResult UnlockUser(string userId)
         {
-            if(!canUnlock)
+            if(!HasRights(userId))
             {
-                ViewBag.NoRight = "error";
-                return View("Users");
+                return View("Forbidden");
             }
             _adminService.UnblockUser(userId);
 
             return RedirectToAction("Users", "Admin");
         }
-        public List<SelectListItem> ConvertToSelectListRoles(List<string> roles)
+        private List<SelectListItem> GetRolesForUser()
         {
+            var roles = RoleManager.Roles.ToList();
+            List<string> rolesList = new List<string>
+            {
+                roles.Where(r => r.Name == "CommonUser").First().Name
+            };
+
+            if (User.IsInRole("Admin"))
+            {
+                rolesList.Add(roles.Where(r => r.Name == "Moderator").First().Name);
+            }
+            if (User.IsInRole("SuperAdmin"))
+            {
+                rolesList.Add(roles.Where(r => r.Name == "Moderator").First().Name);
+                rolesList.Add(roles.Where(r => r.Name == "Admin").First().Name);
+            }
+
             List<SelectListItem> selectListRoles = new List<SelectListItem>();
 
-            foreach (var role in roles)
+            foreach (var role in rolesList)
             {
                 var selectRole = new SelectListItem()
                 {
@@ -175,6 +170,23 @@ namespace Periodicals.Controllers
             }
 
             return selectListRoles;
+        }
+        private bool HasRights(string userId)
+        {
+            var userRoleName = UserManager.GetRoles(userId).First();
+            var userRoleId = Convert.ToInt32(RoleManager.Roles.Where(r => r.Name == userRoleName).First().Id);
+
+            var currentUserRoleName = UserManager.GetRoles(User.Identity.GetUserId()).First();
+            var currentUserRoleId = Convert.ToInt32(RoleManager.Roles.Where(r => r.Name == currentUserRoleName).First().Id);
+
+            if (userRoleId > currentUserRoleId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

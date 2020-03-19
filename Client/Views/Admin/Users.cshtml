@@ -7,13 +7,11 @@
 
 <h2>Users</h2>
 
-@if (ViewBag.NoRight != null)
-{
-    <span>You don't have enough rights to do this operation</span>
-}
+@Html.ValidationSummary()
 
 @foreach (var user in Model.Items)
 {
+    <h3>User ID: @user.Item6</h3>
     <h3>Username: @user.Item2 </h3>
     <h3>Role: @user.Item3</h3>
     <h3>
@@ -31,7 +29,7 @@
     {
         if (user.Item4)
         {
-            <a href="@Url.Action("UnblockUser", "Admin", new { userId = user.Item1, canUnlock = user.Item5})" class="btn btn-success">Unlock</a>
+            <a href="@Url.Action("UnlockUser", "Admin", new { userId = user.Item1, canUnlock = user.Item5})" class="btn btn-success">Unlock</a>
         }
         else
         {

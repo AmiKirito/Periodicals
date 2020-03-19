@@ -9,6 +9,7 @@ using BLL.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Client.Models;
 
 namespace Periodicals.Controllers
 {
@@ -29,36 +30,80 @@ namespace Periodicals.Controllers
             }
         }
         public ApplicationRoleManager RoleManager
-        {
+        { 
             get
             {
                 return HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
             }
         }
-        public ActionResult Users()
+        public ActionResult Users(int page = 1)
         {
+            int pageSize = 2;
             var userIds = _adminService.GetUserIdList();
+            int totalItems = userIds.Count();
 
-            List<Tuple<string, string, string, bool>> model = new List<Tuple<string, string, string, bool>>();
+            if (page > Math.Ceiling(((double)totalItems / (double)pageSize)) && totalItems != 0)
+            {
+                return View("NotFound");
+            }
+
+            var currentUserRoleName = UserManager.GetRoles(User.Identity.GetUserId()).First();
+            var currentUserRoleId = Convert.ToInt32(RoleManager.Roles.Where(r => r.Name == currentUserRoleName).First().Id);
+            List<Tuple<string, string, string, bool, bool>> preModel = new List<Tuple<string, string, string, bool, bool>>();
+            PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = totalItems };
+
+            UsersViewModel model = new UsersViewModel();
 
             foreach (var userId in userIds)
             {
+                var user = UserManager.FindById(userId);
+                var userRoleName = UserManager.GetRoles(userId).First();
+                var userRoleId = Convert.ToInt32(RoleManager.Roles.Where(r => r.Name == userRoleName).First().Id);
                 bool isLocked = false;
+                bool canLock = false;
                 string username = UserManager.FindById(userId).UserName;
                 string role = UserManager.GetRoles(userId).FirstOrDefault();
-                if (UserManager.FindById(userId).LockoutEndDateUtc > DateTime.Now)
+
+                if (user.LockoutEndDateUtc > DateTime.Now && user.LockoutEndDateUtc != null)
                 {
                     isLocked = true;
                 }
-                model.Add(new Tuple<string, string, string, bool>(userId, username, role, isLocked));
+                if(userRoleId > currentUserRoleId)
+                {
+                    canLock = true;
+                }
+
+                preModel.Add(new Tuple<string, string, string, bool, bool>(userId, username, role, isLocked, canLock));
             }
+
+            model.Items = preModel;
+            model.Items = model.Items.Skip((page - 1) * pageSize).Take(pageSize);
+            model.PageInfo = pageInfo;
 
             return View(model);
         }
         [HttpGet]
         public ActionResult CreateUser()
         {
-            return View();
+            var roles = RoleManager.Roles.ToList();
+            List<string> rolesList = new List<string>();
+            CreateUserViewModel model = new CreateUserViewModel();
+
+            rolesList.Add(roles.Where(r => r.Name == "CommonUser").First().Name);
+
+            if (User.IsInRole("Admin"))
+            {
+                rolesList.Add(roles.Where(r => r.Name == "Moderator").First().Name);
+            }                
+            if(User.IsInRole("SuperAdmin"))
+            {
+                rolesList.Add(roles.Where(r => r.Name == "Moderator").First().Name);
+                rolesList.Add(roles.Where(r => r.Name == "Admin").First().Name);
+            }
+
+            model.ExistingRoles = ConvertToSelectListRoles(rolesList);
+
+            return View(model);
         }
         public ActionResult CreateUser(CreateUserViewModel model)
         {
@@ -92,21 +137,44 @@ namespace Periodicals.Controllers
 
             return RedirectToAction("Users", "Admin");
         }
-        public ActionResult BlockUser(string userId)
+        public ActionResult BlockUser(string userId, bool canLock)
         {
-            var user = UserManager.FindById(userId);
+            if(!canLock)
+            {
+                ViewBag.NoRight = "error";
+                return View("Users");
+            }
+            _adminService.BlockUser(userId);
 
-            user.LockoutEndDateUtc = DateTime.MaxValue;
-            
             return RedirectToAction("Users", "Admin");
         }
-        public ActionResult UnblockUser(string userId)
+        public ActionResult UnblockUser(string userId, bool canUnlock)
         {
-            var user = UserManager.FindById(userId);
-
-            user.LockoutEndDateUtc = null;
+            if(!canUnlock)
+            {
+                ViewBag.NoRight = "error";
+                return View("Users");
+            }
+            _adminService.UnblockUser(userId);
 
             return RedirectToAction("Users", "Admin");
+        }
+        public List<SelectListItem> ConvertToSelectListRoles(List<string> roles)
+        {
+            List<SelectListItem> selectListRoles = new List<SelectListItem>();
+
+            foreach (var role in roles)
+            {
+                var selectRole = new SelectListItem()
+                {
+                    Value = role,
+                    Text = role
+                };
+
+                selectListRoles.Add(selectRole);
+            }
+
+            return selectListRoles;
         }
     }
 }

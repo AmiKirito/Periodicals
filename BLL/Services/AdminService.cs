@@ -12,9 +12,20 @@ namespace BLL.Services
         {
             _adminRepository = adminRepository;
         }
+
+        public void BlockUser(string userId)
+        {
+            _adminRepository.BlockUser(userId);
+        }
+
         public List<string> GetUserIdList()
         {
             return _adminRepository.GetIds();
+        }
+
+        public void UnblockUser(string userId)
+        {
+            _adminRepository.UnblockUser(userId);
         }
     }
 }

@@ -1,36 +1,47 @@
-﻿@model  List<Tuple<string, string, string, bool>>
-
+﻿@using Client.ViewModels
+@using Client.HtmlHelpers
+@model UsersViewModel
 @{
     ViewBag.Title = "Users";
 }
 
 <h2>Users</h2>
 
-@foreach (var user in Model)
+@if (ViewBag.NoRight != null)
 {
-    if (User.Identity.Name != user.Item2)
-    {
-        <h1>Username: @user.Item2 </h1>
-        <h3>Role: @user.Item3</h3>
-        <h3>
-            Status:
-            @if (user.Item4 == true)
-            {
-                <span class="text-danger">Locked</span>
-            }
-            else
-            {
-                <span class="text-success">Active</span>
-            }
-        </h3>
-        if (user.Item4)
+    <span>You don't have enough rights to do this operation</span>
+}
+
+@foreach (var user in Model.Items)
+{
+    <h3>Username: @user.Item2 </h3>
+    <h3>Role: @user.Item3</h3>
+    <h3>
+        Status:
+        @if (user.Item4 == true)
         {
-            <a href="@Url.Action("UnblockUser", "Admin", new { userId = user.Item1})" class="btn btn-success">Ublock</a>
+            <span class="text-danger">Locked</span>
         }
         else
         {
-            <a href="@Url.Action("BlockUser", "Admin", new { userId = user.Item1})" class="btn btn-danger">Block</a>
+            <span class="text-success">Active</span>
         }
-        <hr />
+    </h3>
+    if (user.Item5)
+    {
+        if (user.Item4)
+        {
+            <a href="@Url.Action("UnblockUser", "Admin", new { userId = user.Item1, canUnlock = user.Item5})" class="btn btn-success">Unlock</a>
+        }
+        else
+        {
+            <a href="@Url.Action("BlockUser", "Admin", new { userId = user.Item1, canLock = user.Item5})" class="btn btn-danger">Lock</a>
+        }
     }
+    <hr />
 }
+<div class="container text-center mt-3">
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo, x => Url.Action("Users", new { page = x }))
+    </div>
+</div>

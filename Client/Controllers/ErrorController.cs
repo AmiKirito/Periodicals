@@ -4,7 +4,11 @@ namespace Periodicals.Controllers
 {
     public class ErrorController : Controller
     {
-        public ActionResult Index(string exceptionType, string exceptionMessage)
+        public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult NotFound()
         {
             return View();
         }

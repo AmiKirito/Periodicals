@@ -1,5 +1,6 @@
 ﻿using BLL.IRepositories;
 using DAL.ModelsEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,7 +14,16 @@ namespace DAL.Repositories
         {
             _context = context;
         }
-        
+
+        public void BlockUser(string userId)
+        {
+            var user = _context.Users.OfType<UserEntity>().Where(u => u.Id == userId).First();
+
+            user.LockoutEndDateUtc = DateTime.MaxValue;
+
+            _context.SaveChanges();
+        }
+
         public List<string> GetIds()
         {
             var users= _context.Users.OfType<UserEntity>().ToList();
@@ -26,6 +36,15 @@ namespace DAL.Repositories
             }
 
             return userIdList;
+        }
+
+        public void UnblockUser(string userId)
+        {
+            var user = _context.Users.OfType<UserEntity>().Where(u => u.Id == userId).First();
+
+            user.LockoutEndDateUtc = null;
+
+            _context.SaveChanges();
         }
     }
 }

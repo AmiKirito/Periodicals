@@ -25,6 +25,6 @@ namespace Client.ViewModels
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Password doesn't match.")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
-        public List<SelectListItem> ExistingRoles { get; set; }
+        public List<SelectListItem> ExistingRoles;
     }
 }

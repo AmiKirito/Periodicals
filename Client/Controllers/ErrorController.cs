@@ -4,9 +4,15 @@ namespace Periodicals.Controllers
 {
     public class ErrorController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string exceptionType)
         {
-            return View();
+            switch (exceptionType)
+            {
+                case "InvalidOperationException":
+                    return View("NotFound");
+                default:
+                    return View();
+            }
         }
         public ActionResult NotFound()
         {

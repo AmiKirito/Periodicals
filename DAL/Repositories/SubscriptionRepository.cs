@@ -142,14 +142,21 @@ namespace DAL.Repositories
 
             var subscriptionToAdd = new SubscriptionEntity
             {
-                Id = (Convert.ToInt32(_context.Subscriptions.ToList()
-                .OrderByDescending(s => Convert.ToInt32(s.Id))
-                .ToList().First().Id) + 1).ToString(),
                 UserId = userId,
                 PublisherId = publisherId,
                 IsExpired = false,
                 IsRemoved = false
             };
+            if(_context.Subscriptions.Count() == 0)
+            {
+                subscriptionToAdd.Id = "1";
+            }
+            else
+            {
+                subscriptionToAdd.Id = (Convert.ToInt32(_context.Subscriptions.ToList()
+                .OrderByDescending(s => Convert.ToInt32(s.Id))
+                .ToList().First().Id) + 1).ToString();
+            }
 
             SetSubscriptionPeriod(subscriptionToAdd, subscriptionPeriod, subscriptionPublisher.MonthlySubscriptionPrice);
             PayForSubscription(userId, subscriptionToAdd.Price);

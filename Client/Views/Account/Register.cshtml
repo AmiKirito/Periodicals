@@ -15,7 +15,6 @@ else
     {
         <div class="login-wrap">
             <div>
-                @Html.ValidationSummary(true)
                 <div>
                     <span class="login-title">Registration</span>
                 </div>
@@ -35,11 +34,12 @@ else
             <div>
                 <input type="submit" class="btn btn-dark" value="Register" />
             </div>
-            <div>
-                @Html.ValidationMessageFor(model => model.Username, null, new {@class = "text-danger" })<br />
-                @Html.ValidationMessageFor(model => model.Email, null, new {@class = "text-danger" })<br />
-                @Html.ValidationMessageFor(model => model.Password, null, new {@class = "text-danger" })<br />
-                @Html.ValidationMessageFor(model => model.ConfirmPassword, null, new {@class = "text-danger" })<br />
+            <div class="text-danger">
+                @Html.ValidationSummary(true)
+                @Html.ValidationMessageFor(model => model.Username, null, new { @class = "text-danger" })<br />
+                @Html.ValidationMessageFor(model => model.Email, null, new { @class = "text-danger" })<br />
+                @Html.ValidationMessageFor(model => model.Password, null, new { @class = "text-danger" })<br />
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, null, new { @class = "text-danger" })<br />
             </div>
         </div>
     }

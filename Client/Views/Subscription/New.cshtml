@@ -14,8 +14,8 @@
     @Html.HiddenFor(model => model.Publisher.Id);
     @Html.HiddenFor(model => model.Publisher.Title);
     @Html.HiddenFor(model => model.Publisher.MonthlySubscriptionPrice);
-
-    <span>Your balance: @Html.DisplayTextFor(model => model.UserBalance)</span> 
+        
+    <span class="h5">Your balance: $@Html.DisplayTextFor(model => model.UserBalance)</span><br />
 
     @Html.DropDownListFor(model => model.SubscriptionPeriod, new List<SelectListItem>
     {
@@ -23,9 +23,11 @@
         new SelectListItem{ Text = $"Three month subscription - ${Model.Publisher.MonthlySubscriptionPrice * 3}", Value = "quarter"},
         new SelectListItem{ Text = $"Half year subscription - ${Model.Publisher.MonthlySubscriptionPrice * 6}", Value = "half"},
         new SelectListItem{ Text = $"Year subscription - ${Model.Publisher.MonthlySubscriptionPrice * 12}", Value = "year"},
-    }, new { @class = "custom-select" });
+    }, new { @class = "custom-select col-4" });
 
-    <input type="submit" class="btn btn-dark editor" value="Subscribe">
+    <input type="submit" class="btn btn-outline-dark editor" value="Subscribe">
 
-    @Html.ValidationSummary(false);
+    <div class="text-danger">
+        @Html.ValidationSummary(false)
+    </div>
 }

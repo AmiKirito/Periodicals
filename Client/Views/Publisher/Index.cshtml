@@ -57,6 +57,11 @@
 
             window.location.href = '@Url.Action("Index", "Publisher")?search=' + search;
         });
+        $("#resetBtn").click(function (e) {
+            e.preventDefault();
+
+            window.location.href = '@Url.Action("Index", "Publisher")';
+        });
     });
 </script>
 
@@ -73,7 +78,7 @@
                 {
                     <a href="@Url.Action("Details", "Publisher", new { id = Convert.ToInt32(publisher.Id)})" class="col-3 light text-decoration-none">
                         <span>@publisher.Title</span>
-                        <img class="col" src="@publisher.ImagePath" />
+                        <img height="175" class="col" src="@publisher.ImagePath" />
                     </a>
                 }
             </div>
@@ -97,25 +102,20 @@
                     <input id="sortPrice" type="checkbox" value="@sortPrice" name="sortPrice" />
                 </div>
             </div>
-            
-            <div class="d-flex justify-content-between">
-                <div class="flex-column">
-                    @Html.DropDownList("filterTopic", Model.ExistingTopics, new { @class = "custom-select" })
-                </div>
-                <div class="flex-column">
-                    <input type="submit" class="btn btn-primary" value="Filter" id="filterBtn" />
+            <div class="input-group mb-3 mt-2">
+                @Html.DropDownList("filterTopic", Model.ExistingTopics, new { @class = "custom-select" })
+                <div class="input-group-append">
+                    <input type="submit" class="btn btn-outline-secondary" value="Filter" id="filterBtn" />
                 </div>
             </div>
-            <div class="d-flex">
-                @Html.Editor("search", new { htmlAttributes = new { placeholder = "Search...", @class = "form-control p-2 mt-1" } })
-            </div>
-            <div class="d-flex justify-content-around">
-                <div class="flex-column">
-                    <input type="submit" class="btn btn-primary pt-3 pb-3 pl-5 pr-5 m-1" value="Search" id="searchBtn" />
+            <div class="input-group mb-3 mt-2">
+                @Html.Editor("search", new { htmlAttributes = new { placeholder = "Search...", @class = "form-control" } })
+                <div class="input-group-append">
+                    <input type="submit" class="btn btn-outline-secondary" value="&#128270" id="searchBtn" />
                 </div>
-                <div class="flex-column">
-                    <a href="@Url.Action("Index", "Publisher")" class="btn btn-warning pt-3 pb-3 pl-3 pr-3 m-1">Reset</a>
-                </div>
+                <div class="input-group-append">
+                    <input type="submit" class="btn btn-outline-danger" value="&#8634" id="resetBtn" />
+                </div>  
             </div>
         </div>
     </div>

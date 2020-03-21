@@ -18,6 +18,12 @@ namespace Periodicals.Controllers
     {
         private readonly IPublisherService _publisherService;
         private readonly ILogger _logger;
+        private string[] validImageTypes = new string[]
+        {
+        "image/jpg",
+        "image/jpeg",
+        "image/png"
+        };
 
         public PublisherController(IPublisherService publisherService, ILogger logger)
         {
@@ -145,28 +151,28 @@ namespace Periodicals.Controllers
             _logger.Information("Action: New; Controller: Publisher; Call method: POST;");
             try
             {
+
                 if (!ModelState.IsValid)
                 {
+                    model.ExistingAuthors = ConvertToSelectListAuthors(_publisherService.GetExistingAuthors());
+                    model.ExistingTopics = ConvertToSelectListTopics(_publisherService.GetExistingTopics());
+
                     return View(model);
-                }
-
-                model.ExistingAuthors = ConvertToSelectListAuthors(_publisherService.GetExistingAuthors());
-                model.ExistingTopics = ConvertToSelectListTopics(_publisherService.GetExistingTopics());
-
-                var validImageTypes = new string[]
-                {
-                "image/jpg",
-                "image/jpeg",
-                "image/png"
-                };
+                }                
 
                 if (model.Image == null || model.Image.ContentLength == 0)
                 {
+                    model.ExistingAuthors = ConvertToSelectListAuthors(_publisherService.GetExistingAuthors());
+                    model.ExistingTopics = ConvertToSelectListTopics(_publisherService.GetExistingTopics());
+
                     ModelState.AddModelError("", "This field is required");
                     return View(model);
                 }
                 if (!validImageTypes.Any(model.Image.ContentType.Contains))
                 {
+                    model.ExistingAuthors = ConvertToSelectListAuthors(_publisherService.GetExistingAuthors());
+                    model.ExistingTopics = ConvertToSelectListTopics(_publisherService.GetExistingTopics());
+
                     ModelState.AddModelError("", "Please choose either jpg, jpeg or png format file");
                     return View(model);
                 }
@@ -228,8 +234,12 @@ namespace Periodicals.Controllers
             _logger.Information("Action: Edit; Controller: Publisher; Call method: POST;");
             try 
             {
+                var publisher = _publisherService.GetPublisherById(model.Id.ToString());
+
                 if (!ModelState.IsValid)
                 {
+                    SetPublisherToEditAuthors(model, publisher);
+                    SetPublisherToEditTopics(model, publisher);
                     return View(model);
                 }
 
@@ -245,6 +255,15 @@ namespace Periodicals.Controllers
                 if (model.Image != null)
                 {
                     publisherToChanage.ImagePath = GenerateImageSavePath(model.Image);
+
+                    if (!validImageTypes.Any(model.Image.ContentType.Contains))
+                    {
+                        SetPublisherToEditAuthors(model, publisher);
+                        SetPublisherToEditTopics(model, publisher);
+
+                        ModelState.AddModelError("", "Please choose either jpg, jpeg or png format file");
+                        return View(model);
+                    }   
                 }
                 else
                 {

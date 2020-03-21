@@ -151,7 +151,7 @@ namespace Periodicals.Controllers
 
                 if (!result.Succeeded)
                 {
-                    ModelState.AddModelError("errorRegisterAttempt", "Invalid registration attempt");
+                    ModelState.AddModelError("", "Invalid registration attempt");
                     return View(model);
                 }
 
@@ -161,7 +161,7 @@ namespace Periodicals.Controllers
 
                 if (!roleResult.Succeeded)
                 {
-                    ModelState.AddModelError("errorRegisterAttempt", "Invalid registration attempt");
+                    ModelState.AddModelError("", "Invalid registration attempt");
                     return View(model);
                 }
 
@@ -174,7 +174,7 @@ namespace Periodicals.Controllers
                         return View("Lockout");
                     case SignInStatus.Failure:
                     default:
-                        ModelState.AddModelError("loginError", "Invalid login attempt.");
+                        ModelState.AddModelError("", "Invalid login attempt.");
                         return View(model);
                 }
             }

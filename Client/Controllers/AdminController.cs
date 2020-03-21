@@ -110,12 +110,13 @@ namespace Periodicals.Controllers
         [HttpPost]
         public ActionResult CreateUser(CreateUserViewModel model)
         {
-            _logger.Information("Action: CreateUser; Controller: Admin; Call method: POST;");
+            _logger.Information("Action: Crea   teUser; Controller: Admin; Call method: POST;");
             try
             {
                 if (!ModelState.IsValid)
                 {
                     model.ExistingRoles = GetRolesForUser();
+                    ModelState.AddModelError("", "Invalid registration attempt");
                     return View(model);
                 }
 
@@ -128,7 +129,8 @@ namespace Periodicals.Controllers
 
                 if (!result.Succeeded)
                 {
-                    ModelState.AddModelError("errorRegisterAttempt", "Invalid registration attempt");
+                    model.ExistingRoles = GetRolesForUser();
+                    ModelState.AddModelError("", "Invalid registration attempt");
                     return View(model);
                 }
 
@@ -138,7 +140,8 @@ namespace Periodicals.Controllers
 
                 if (!roleResult.Succeeded)
                 {
-                    ModelState.AddModelError("errorRegisterAttempt", "Invalid registration attempt");
+                    model.ExistingRoles = GetRolesForUser();
+                    ModelState.AddModelError("", "Invalid registration attempt");
                     return View(model);
                 }
 

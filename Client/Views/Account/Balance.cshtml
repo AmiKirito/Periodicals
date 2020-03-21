@@ -4,28 +4,29 @@
 @{
     ViewBag.Title = "Balance";
 }
+<div class="col">
+    <h2>Balance</h2>
 
-<h2>Balance</h2>
-
-<h3>Your balance: $@Model.Balance</h3>
+    <h3>Your balance: $@Model.Balance</h3>
+</div>
 
 @using (Html.BeginForm("AddBalance", "Account", FormMethod.Post))
 {
-    @Html.ValidationSummary(true)
-    <div class="container">
-        <div class="row">
-            <div class="flex-column">
-                <div>
-                    @Html.LabelFor(model => model.AddSum)
-                    @Html.EditorFor(model => model.AddSum, new { htmlAttributes = new { placeholder = "Enter the sum", @class = "editor" } })
-                </div>
-                <div class="text-danger">
-                    @Html.ValidationMessageFor(model => model.AddSum)
-                </div>
+    <div class="col-4">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
             </div>
-            <div class="p-1">
-                <input type="submit" value="Add Money" class="btn btn-dark editor"/>
+                @Html.EditorFor(model => model.AddSum, new { htmlAttributes = new { placeholder = "Enter the sum", @class = "form-control" } })
+            <div class="input-group-append">
+                <input class="btn btn-outline-secondary" type="submit" value="Add money"/>
             </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="text-danger">
+            @Html.ValidationSummary(true)
+            @Html.ValidationMessageFor(model => model.AddSum)
         </div>
     </div>
 }

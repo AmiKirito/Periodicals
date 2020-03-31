@@ -86,7 +86,7 @@ namespace Periodicals.Controllers
                         return View("Lockout");
                     case SignInStatus.Failure:
                     default:
-                        ModelState.AddModelError("", "Invalid login attempt.");
+                        ModelState.AddModelError("", "Invalid login attempt");
                         return View(model);
                 }
             }
@@ -174,7 +174,7 @@ namespace Periodicals.Controllers
                         return View("Lockout");
                     case SignInStatus.Failure:
                     default:
-                        ModelState.AddModelError("", "Invalid login attempt.");
+                        ModelState.AddModelError("", "Invalid login attempt");
                         return View(model);
                 }
             }
@@ -262,7 +262,7 @@ namespace Periodicals.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError("changeError", "Invalid data entered.");
+                    ModelState.AddModelError("changeError", "Invalid data entered");
                     return View(model);
                 }
                 var result = UserManager.ChangePassword(model.UserId, model.OldPassword, model.NewPassword);
@@ -271,7 +271,7 @@ namespace Periodicals.Controllers
                     case true:
                         return View("Cabinet");
                     default:
-                        ModelState.AddModelError("", "Invalid change password attempt.");
+                        ModelState.AddModelError("", "Invalid change password attempt");
                         return View(model);
                 }
             }

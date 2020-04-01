@@ -29,11 +29,11 @@
     {
         if (user.Item4)
         {
-            <a href="@Url.Action("UnlockUser", "Admin", new { userId = user.Item1, canUnlock = user.Item5})" class="btn btn-success">Unlock</a>
+            <a href="@Url.Action("UnlockUser", "Admin", new { userId = user.Item1})" class="btn btn-success">Unlock</a>
         }
         else
         {
-            <a href="@Url.Action("BlockUser", "Admin", new { userId = user.Item1, canLock = user.Item5})" class="btn btn-danger">Lock</a>
+            <a href="@Url.Action("BlockUser", "Admin", new { userId = user.Item1})" class="btn btn-danger">Lock</a>
         }
     }
     <hr />

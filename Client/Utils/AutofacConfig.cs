@@ -8,13 +8,12 @@ using BLL.Services;
 using BLL.IServices;
 using Serilog;
 using System;
-using Client.App_Start;
-using Microsoft.AspNet.Identity.EntityFramework;
-using DAL.ModelsEntities;
-using Microsoft.AspNet.Identity.Owin;
 
 namespace Client.Utils
 {
+    /// <summary>
+    /// Class that is responsible for configuring dependencies between classes and interfaces and setting dependency resolver
+    /// </summary>
     public class AutofacConfig
     {
         public static void ConfigureContainer() 

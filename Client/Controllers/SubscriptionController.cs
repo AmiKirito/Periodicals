@@ -11,6 +11,9 @@ using Serilog;
 
 namespace Periodicals.Controllers
 {
+    /// <summary>
+    /// Class that is responsible for processing requests related to manipulating subscriptions
+    /// </summary>
     [Authorize]
     public class SubscriptionController : Controller
     {

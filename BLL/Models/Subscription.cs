@@ -2,6 +2,9 @@
 
 namespace BLL.Models
 {
+    /// <summary>
+    /// Class that represents the subscription model for business logic and presentation layers
+    /// </summary>
     public class Subscription
     {
         public string Id { get; set; }

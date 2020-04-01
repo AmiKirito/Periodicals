@@ -2,6 +2,9 @@
 
 namespace Client.ViewModels
 {
+    /// <summary>
+    /// Class that represents balance ViewModel for business logic and presentation layers
+    /// </summary>
     public class BalanceViewModel
     {
         public int Balance { get; set; }

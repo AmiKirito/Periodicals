@@ -2,6 +2,9 @@
 
 namespace BLL.Models
 {
+    /// <summary>
+    /// Class that represents the author model for business logic and presentation layers
+    /// </summary>
     public class Author
     {
         public string Id { get; set; }

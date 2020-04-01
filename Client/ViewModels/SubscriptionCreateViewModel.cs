@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Client.ViewModels
 {
+    /// <summary>
+    /// Class that represents creating subscription ViewModel for business logic and presentation layers
+    /// </summary>
     public class SubscriptionCreateViewModel
     {
         public string UserId { get; set; }

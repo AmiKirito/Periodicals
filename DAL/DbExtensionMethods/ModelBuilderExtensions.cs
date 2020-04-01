@@ -3,6 +3,9 @@ using System.Data.Entity;
 
 namespace DAL.DbExtensionMethods
 {
+    /// <summary>
+    /// Class that is responsible for setting some EF models dependencies in the database
+    /// </summary>
     public static class ModelBuilderExtensions
     {
         public static void Seed(this DbModelBuilder modelBuilder)

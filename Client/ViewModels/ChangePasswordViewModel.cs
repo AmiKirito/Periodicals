@@ -2,6 +2,9 @@
 
 namespace Client.ViewModels
 {
+    /// <summary>
+    /// Class that represents password change ViewModel for business logic and presentation layers
+    /// </summary>
     public class ChangePasswordViewModel
     {
         [Required(ErrorMessage = "Username is required")]

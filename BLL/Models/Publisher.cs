@@ -2,6 +2,9 @@
 
 namespace BLL.Models
 {
+    /// <summary>
+    /// Class that represents the publisher model for business logic and presentation layers
+    /// </summary>
     public class Publisher
     {
         public string Id { get; set; }

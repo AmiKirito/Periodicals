@@ -36,6 +36,7 @@ namespace DAL.Repositories
         public int CountAllForUser(string userId)
         {
             var subscriptionsCountForUser = _context.Subscriptions.Where(s => s.UserId == userId && s.IsRemoved == false).Count();
+
             return subscriptionsCountForUser;
         }
         public List<Subscription> GetAll(string userId)

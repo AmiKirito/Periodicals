@@ -12,6 +12,9 @@ using System;
 
 namespace Periodicals.Controllers
 {
+    /// <summary>
+    /// Class that is responsible for processing requests which are related to manipulating user account
+    /// </summary>
     [Authorize]
     public class AccountController : Controller
     {

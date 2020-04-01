@@ -14,6 +14,9 @@ using Serilog;
 
 namespace Periodicals.Controllers
 {
+    /// <summary>
+    /// Class that is responsible for processing requests which are related to administering user accounts
+    /// </summary>
     [Authorize(Roles = "Moderator,Admin,SuperAdmin")]
     public class AdminController : Controller
     {

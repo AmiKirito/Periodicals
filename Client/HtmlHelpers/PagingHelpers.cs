@@ -5,8 +5,14 @@ using System.Web.Mvc;
 
 namespace Client.HtmlHelpers
 {
+    /// <summary>
+    /// Class that is responsible for implementation of pagination
+    /// </summary>
     public static class PagingHelpers
     {
+        /// <summary>
+        /// Extension method that is responsible for creating pagination HTML helper
+        /// </summary>
         public static MvcHtmlString PageLinks(this HtmlHelper html,
               PageInfo pageInfo, Func<int,string> pageUrl)
         {

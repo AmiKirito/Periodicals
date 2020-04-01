@@ -4,10 +4,13 @@ using System.Web.Mvc;
 
 namespace Periodicals.Controllers
 {
+    /// <summary>
+    /// Class that is responsible for processing requests related to the home page
+    /// </summary>
     public class HomeController : Controller
     {
         private readonly ILogger _logger;
-
+        public HomeController() { }
         public HomeController(ILogger logger)
         {
             _logger = logger;

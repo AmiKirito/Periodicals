@@ -4,6 +4,9 @@ using System.Web.Mvc;
 
 namespace Client.ViewModels
 {
+    /// <summary>
+    /// Class that represents creating user ViewModel for business logic and presentation layers
+    /// </summary>
     public class CreateUserViewModel
     {
         [Required(ErrorMessage = "Username is required")]

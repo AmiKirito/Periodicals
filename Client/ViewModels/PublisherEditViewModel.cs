@@ -5,6 +5,9 @@ using System.Web.Mvc;
 
 namespace Client.ViewModels
 {
+    /// <summary>
+    /// Class that represents editing publisher ViewModel for business logic and presentation layers
+    /// </summary>
     public class PublisherEditViewModel
     {
         public string Id { get; set; }

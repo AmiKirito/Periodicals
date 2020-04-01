@@ -5,6 +5,9 @@ using System.Web.Mvc;
 
 namespace Client.ViewModels
 {
+    /// <summary>
+    /// Class that represents creating publisher ViewModel for business logic and presentation layers
+    /// </summary>
     public class PublisherCreateViewModel
     {
         [Required(ErrorMessage = "The title field is required")]

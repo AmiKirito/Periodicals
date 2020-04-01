@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DAL.ModelsEntities
 {
+    /// <summary>
+    /// Class that represents user entity for data access layer
+    /// </summary>
     public class UserEntity : IdentityUser
     {
         public List<SubscriptionEntity> Subscriptions { get; set; }

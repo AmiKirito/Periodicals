@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.ModelsEntities
 {
+    /// <summary>
+    /// Class that represents publisher entity for data access layer
+    /// </summary>
     [Table("Publishers")]
     public class PublisherEntity
     {

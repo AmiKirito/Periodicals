@@ -2,6 +2,9 @@
 
 namespace BLL.Models
 {
+    /// <summary>
+    /// Class that represents the topic model for business logic and presentation layers
+    /// </summary>
     public class Topic
     {
         public string Id { get; set; }

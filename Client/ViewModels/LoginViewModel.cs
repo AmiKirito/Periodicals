@@ -2,6 +2,9 @@
 
 namespace Client.ViewModels
 {
+    /// <summary>
+    /// Class that represents login ViewModel for business logic and presentation layers
+    /// </summary>
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Username is required")]

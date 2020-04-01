@@ -13,6 +13,9 @@ using System.IO;
 
 namespace Periodicals.Controllers
 {
+    /// <summary>
+    /// Class that is responsible for processing requests related to manipulating publishers
+    /// </summary>
     [Authorize(Roles = "Moderator, Admin, SuperAdmin")]
     public class PublisherController : Controller
     {
@@ -24,7 +27,6 @@ namespace Periodicals.Controllers
         "image/jpeg",
         "image/png"
         };
-
         public PublisherController(IPublisherService publisherService, ILogger logger)
         {
             _publisherService = publisherService;

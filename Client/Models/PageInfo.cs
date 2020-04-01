@@ -2,6 +2,9 @@
 
 namespace Client.Models
 {
+    /// <summary>
+    /// Class that represents pagination model for business logic and presentation layers
+    /// </summary>
     public class PageInfo
     {
         public int PageNumber { get; set; }

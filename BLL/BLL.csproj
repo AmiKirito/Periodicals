@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnumExtensions\EnumExtensions.cs" />
     <Compile Include="IRepositories\IAccountRepository.cs" />
     <Compile Include="IRepositories\IAdminRepository.cs" />
     <Compile Include="IRepositories\IPublisherRepository.cs" />

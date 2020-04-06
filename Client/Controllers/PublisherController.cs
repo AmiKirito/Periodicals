@@ -256,8 +256,6 @@ namespace Periodicals.Controllers
 
                 if (model.Image != null)
                 {
-                    publisherToChanage.ImagePath = GenerateImageSavePath(model.Image);
-
                     if (!validImageTypes.Any(model.Image.ContentType.Contains))
                     {
                         SetPublisherToEditAuthors(model, publisher);
@@ -265,7 +263,9 @@ namespace Periodicals.Controllers
 
                         ModelState.AddModelError("", "Please choose either jpg, jpeg or png format file");
                         return View(model);
-                    }   
+                    }
+
+                    publisherToChanage.ImagePath = GenerateImageSavePath(model.Image);
                 }
                 else
                 {

@@ -1,9 +1,10 @@
 .vs/
 packages/
-bin/
+BLL/bin/
+DAL/bin/
+UnitTests/UnitTests/bin/
 obj/
-App_Data/
+Client/App_Data/Logs/
 DAL/packages/
 BLL/packages/
 Client/packages/
-Client/Content/images/publisherImages

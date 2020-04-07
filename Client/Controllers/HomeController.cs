@@ -25,7 +25,7 @@ namespace Periodicals.Controllers
             {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         private void LogException(Exception e)

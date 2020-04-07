@@ -49,7 +49,7 @@ namespace Periodicals.Controllers
             } catch (Exception e) {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         [HttpGet]
@@ -86,7 +86,7 @@ namespace Periodicals.Controllers
             } catch (Exception e) {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         [HttpPost]
@@ -114,7 +114,7 @@ namespace Periodicals.Controllers
             {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         public ActionResult Remove(int? id)
@@ -136,7 +136,7 @@ namespace Periodicals.Controllers
             {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         private void LogException(Exception e)

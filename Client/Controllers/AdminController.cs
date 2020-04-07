@@ -88,7 +88,7 @@ namespace Periodicals.Controllers
             {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         [HttpGet]
@@ -107,7 +107,7 @@ namespace Periodicals.Controllers
             {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         [HttpPost]
@@ -154,7 +154,7 @@ namespace Periodicals.Controllers
             {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         public ActionResult BlockUser(string userId)
@@ -174,7 +174,7 @@ namespace Periodicals.Controllers
             {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         public ActionResult UnlockUser(string userId)
@@ -194,7 +194,7 @@ namespace Periodicals.Controllers
             {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         private List<SelectListItem> GetRolesForUser()

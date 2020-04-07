@@ -89,7 +89,7 @@ namespace Periodicals.Controllers
             } catch(Exception e) {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         [AllowAnonymous]
@@ -122,7 +122,7 @@ namespace Periodicals.Controllers
             } catch (Exception e) {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         [HttpGet]
@@ -144,7 +144,7 @@ namespace Periodicals.Controllers
             catch (Exception e) {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         [HttpPost]
@@ -195,7 +195,7 @@ namespace Periodicals.Controllers
             } catch (Exception e) {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         [HttpGet]
@@ -227,7 +227,7 @@ namespace Periodicals.Controllers
             catch (Exception e) {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }   
         }
         [HttpPost]
@@ -281,7 +281,7 @@ namespace Periodicals.Controllers
             } catch (Exception e) {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
             
         }
@@ -301,7 +301,7 @@ namespace Periodicals.Controllers
             } catch (Exception e) {
                 LogException(e);
 
-                return RedirectToAction("Index", "Error", new { e.GetType().Name });
+                return RedirectToAction("Index", "Error", new { exceptionType = e.GetType().Name });
             }
         }
         private void SetPublisherToEditTopics(PublisherEditViewModel publisherToEdit, Publisher publisher)
